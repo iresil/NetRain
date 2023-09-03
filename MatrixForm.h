@@ -2,7 +2,7 @@
 
 #include "CodeRain.h"
 
-namespace CppCLRWinFormsProject {
+namespace NetRain {
 
     using namespace System;
     using namespace System::ComponentModel;
@@ -85,4 +85,4 @@ namespace CppCLRWinFormsProject {
             N_CodeRain::paint(codeRainBox, e);
         }
     }; // end of class MatrixForm
-} // end of namespace CppCLRWinFormsProject
+} // end of namespace NetRain

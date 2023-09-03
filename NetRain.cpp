@@ -11,6 +11,6 @@ int main()
 {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
-    Application::Run(gcnew CppCLRWinFormsProject::MatrixForm());
+    Application::Run(gcnew NetRain::MatrixForm());
     return 0;
 }

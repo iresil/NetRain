@@ -6,11 +6,11 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
-[assembly:AssemblyTitleAttribute(L"CppCLRWinFormsProject")];
+[assembly:AssemblyTitleAttribute(L"NetRain")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"CppCLRWinFormsProject")];
+[assembly:AssemblyProductAttribute(L"NetRain")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2022")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];

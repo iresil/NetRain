@@ -33,12 +33,9 @@ namespace NetRain {
                 delete components;
             }
         }
-    private: System::Windows::Forms::PictureBox^ codeRainBox;
-    protected:
-
-
-
     private:
+        System::Windows::Forms::PictureBox^ codeRainBox;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -80,7 +77,7 @@ namespace NetRain {
 
         }
 #pragma endregion
-    private:
+
         System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
             N_CodeRain::paint(codeRainBox, e);
         }

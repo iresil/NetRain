@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="CodeRain.cpp" />
     <ClCompile Include="NetRain.cpp" />
     <ClCompile Include="MatrixForm.cpp" />
     <ClCompile Include="pch.cpp">

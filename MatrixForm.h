@@ -79,7 +79,7 @@ namespace NetRain {
 #pragma endregion
 
         System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-            N_CodeRain::paint(codeRainBox, e);
+            N_CodeRain::CodeRain::paint(codeRainBox, e);
         }
     }; // end of class MatrixForm
 } // end of namespace NetRain

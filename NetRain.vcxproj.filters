@@ -52,6 +52,9 @@
     <ClCompile Include="MatrixForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CodeRain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ResourceHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "ResourceHandler.h"
+#include "ResourceItem.h"
 #include <wtypes.h>
 
 namespace N_CodeRain {
-    ResourceHandler::ResourceHandler(int resource_id, const char* resource_class) {
-        hResource = FindResource(nullptr, MAKEINTRESOURCE(resource_id), RT_STRING);
+    ResourceItem::ResourceItem(int resource_id, LPCWSTR resource_class) {
+        hResource = FindResource(nullptr, MAKEINTRESOURCE(resource_id), resource_class);
+
         if (hResource != 0)
         {
             hMemory = LoadResource(nullptr, hResource);
@@ -16,11 +17,11 @@ namespace N_CodeRain {
         }
     }
 
-    Parameters ResourceHandler::GetResource() const {
+    Parameters ResourceItem::GetResource() const {
         return p;
     }
 
-    char* ResourceHandler::GetResourceString() const {
+    char* ResourceItem::GetResourceString() const {
         char* dst = NULL;
         if (p.ptr != nullptr)
             dst = reinterpret_cast<char*>(p.ptr);

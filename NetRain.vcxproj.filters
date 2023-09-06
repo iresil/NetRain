@@ -35,7 +35,7 @@
     <ClInclude Include="CppCLR_Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceHandler.h">
+    <ClInclude Include="ResourceItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,7 +55,7 @@
     <ClCompile Include="CodeRain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceHandler.cpp">
+    <ClCompile Include="ResourceItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

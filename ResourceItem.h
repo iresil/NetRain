@@ -9,9 +9,9 @@ namespace N_CodeRain
         LPVOID ptr = nullptr;
     };
 
-    class ResourceHandler {
+    class ResourceItem {
     public:
-        ResourceHandler(int resource_id, const char* resource_class);
+        ResourceItem(int resource_id, LPCWSTR resource_class);
         Parameters GetResource() const;
         char* GetResourceString() const;
     private:

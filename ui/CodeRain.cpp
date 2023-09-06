@@ -1,7 +1,7 @@
-#include "pch.h"
+#include "..\pch.h"
 #include "CodeRain.h"
-#include "Resource.h"
-#include "ResourceItem.h"
+#include "..\Resource.h"
+#include "..\utils\ResourceItem.h"
 
 #include <stdio.h>
 #include <string.h>

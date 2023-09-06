@@ -30,16 +30,16 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MatrixForm.h">
+    <ClInclude Include="ui\CodeRain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CodeRain.h">
+    <ClInclude Include="ui\MatrixForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CppCLR_Utils.h">
+    <ClInclude Include="utils\CppCLR_Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceItem.h">
+    <ClInclude Include="utils\ResourceItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,13 +53,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MatrixForm.cpp">
+    <ClCompile Include="ui\CodeRain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CodeRain.cpp">
+    <ClCompile Include="ui\MatrixForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceItem.cpp">
+    <ClCompile Include="utils\ResourceItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

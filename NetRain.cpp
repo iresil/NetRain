@@ -2,7 +2,7 @@
 
 using namespace System;
 
-#include "MatrixForm.h"
+#include "ui\MatrixForm.h"
 
 using namespace System::Windows::Forms;
 

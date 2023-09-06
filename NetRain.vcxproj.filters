@@ -13,6 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms;svg</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Vectors">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>svg</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -66,169 +70,169 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\01.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\02.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\03.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\04.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\05.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\06.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\07.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\08.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\09.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\10.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\11.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\12.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\13.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\14.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\15.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\16.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\17.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\18.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\19.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\20.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\21.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\22.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\23.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\24.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\25.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\26.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\27.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\28.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\29.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\30.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\31.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\32.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\33.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\34.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\35.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\36.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\37.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\38.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\39.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\40.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\41.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\42.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\43.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\44.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\45.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\46.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\47.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\48.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\49.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\50.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\51.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\52.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\53.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\54.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
     <None Include="resources\55.svg">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Vectors</Filter>
     </None>
   </ItemGroup>
 </Project>

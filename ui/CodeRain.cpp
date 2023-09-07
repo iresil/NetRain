@@ -32,27 +32,6 @@ namespace N_CodeRain
         delete bmp;
     }
 
-    void CodeRain::paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e)
-    {
-        float gridCellSize = 20;
-        int width = codeRainBox->Width;
-        int height = codeRainBox->Height;
-
-        int cellCountH = width / gridCellSize;
-        int cellCountV = height / gridCellSize;
-
-        float diffW = image->Width / gridCellSize;
-        float diffH = image->Height / gridCellSize;
-
-        for (int x = cellCountH - 1; x >= 0; x--)
-        {
-            for (int y = cellCountV - 1; y >= 0; y--)
-            {
-                e->Graphics->DrawImage(image, x * gridCellSize, y * gridCellSize, image->Width / diffW, image->Height / diffH);
-            }
-        }
-    }
-
     Bitmap^ CodeRain::resourceToBitmap(int resource_id)
     {
         ResourceItem res(resource_id, L"Vector");
@@ -106,5 +85,26 @@ namespace N_CodeRain
         nsvgDelete(image);
 
         return bmp;
+    }
+
+    void CodeRain::paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e)
+    {
+        float gridCellSize = 12;
+        int width = codeRainBox->Width;
+        int height = codeRainBox->Height;
+
+        int cellCountH = width / gridCellSize;
+        int cellCountV = height / gridCellSize;
+
+        float diffW = image->Width / gridCellSize;
+        float diffH = image->Height / gridCellSize;
+
+        for (int x = cellCountH - 1; x >= 0; x--)
+        {
+            for (int y = cellCountV - 1; y >= 0; y--)
+            {
+                e->Graphics->DrawImage(image, x * gridCellSize, y * gridCellSize, image->Width / diffW, image->Height / diffH);
+            }
+        }
     }
 }

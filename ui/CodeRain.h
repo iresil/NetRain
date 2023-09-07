@@ -9,7 +9,7 @@ namespace N_CodeRain
     public:
         static void paint(PictureBox^ codeRainBox, PaintEventArgs^ e);
     private:
-        static void paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e);
         static Bitmap^ resourceToBitmap(int resource_id);
+        static void paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

@@ -14,6 +14,7 @@ namespace N_CodeRain
     using namespace System;
     using namespace System::Windows::Forms;
     using namespace System::Drawing;
+    using namespace System::Drawing::Imaging;
     using namespace System::Drawing::Drawing2D;
     using namespace System::Collections::Generic;
 
@@ -89,21 +90,41 @@ namespace N_CodeRain
 
     void CodeRain::paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
-        float gridCellSize = 12;
+        float emptySpacePercent = 0.15;
+        int columnNumber = 50;
         int width = codeRainBox->Width;
         int height = codeRainBox->Height;
 
-        int cellCountH = width / gridCellSize;
-        int cellCountV = height / gridCellSize;
+        float spaceColumns = columnNumber * emptySpacePercent;
+        float fullGridCellSize = width / (float)columnNumber;
+        float spacedGridCellSize = width / (columnNumber + spaceColumns);
+        int rowNumber = height / fullGridCellSize;
 
-        float diffW = image->Width / gridCellSize;
-        float diffH = image->Height / gridCellSize;
+        float firstColumnBuffer = fullGridCellSize * emptySpacePercent / 2;
+        float firstRowBuffer = fullGridCellSize * emptySpacePercent / 4;
 
-        for (int x = cellCountH - 1; x >= 0; x--)
+        for (int x = columnNumber - 1; x >= 0; x--)
         {
-            for (int y = cellCountV - 1; y >= 0; y--)
+            for (int y = rowNumber; y >= 0; y--)
             {
-                e->Graphics->DrawImage(image, x * gridCellSize, y * gridCellSize, image->Width / diffW, image->Height / diffH);
+                float opacity = 1;
+
+                if (x % 2 == 0 && y % 2 == 0)
+                    opacity = 0.25;
+                else if (x % 2 == 0)
+                    opacity = 0.5;
+                else if (y % 2 == 0)
+                    opacity = 0.75;
+
+                ColorMatrix^ cm = gcnew ColorMatrix();
+                cm->Matrix33 = opacity;
+                ImageAttributes^ ia = gcnew ImageAttributes();
+                ia->SetColorMatrix(cm);
+                e->Graphics->DrawImage(image, System::Drawing::Rectangle(firstColumnBuffer + x * fullGridCellSize, firstRowBuffer + y * fullGridCellSize, spacedGridCellSize, spacedGridCellSize),
+                    0, 0, image->Width, image->Height, GraphicsUnit::Pixel, ia);
+
+                delete ia;
+                delete cm;
             }
         }
     }

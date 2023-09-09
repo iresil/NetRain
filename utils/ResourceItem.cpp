@@ -1,6 +1,5 @@
 #include "..\pch.h"
 #include "ResourceItem.h"
-#include <wtypes.h>
 
 namespace N_CodeRain {
     ResourceItem::ResourceItem(int resource_id, LPCWSTR resource_class) {
@@ -17,11 +16,13 @@ namespace N_CodeRain {
         }
     }
 
-    Parameters ResourceItem::GetResource() const {
+    Parameters ResourceItem::GetResource() const
+    {
         return p;
     }
 
-    char* ResourceItem::GetResourceString() const {
+    char* ResourceItem::GetResourceString() const
+    {
         char* dst = NULL;
         if (p.ptr != nullptr)
             dst = reinterpret_cast<char*>(p.ptr);

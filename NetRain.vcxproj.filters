@@ -36,10 +36,10 @@
     <ClInclude Include="ui\MatrixForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\CppCLR_Utils.h">
+    <ClInclude Include="utils\ResourceItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\ResourceItem.h">
+    <ClInclude Include="ui\CppCLR_Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,9 +10,10 @@
 #error Only for C++/CLI Applications (e.g. Visual Studio Windows Forms Projects)
 #endif
 
-#include <string>
 #define SIMPLE_STRING_CONVERSIONS 1
 #if SIMPLE_STRING_CONVERSIONS
+
+#include <string>
 
 namespace rk1 {
     /*

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <wtypes.h>
-
 namespace N_CodeRain
 {
     struct Parameters {

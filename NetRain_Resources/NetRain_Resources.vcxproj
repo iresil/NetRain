@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup Label="ProjectConfigurations">
+        <ProjectConfiguration Include="Debug|Win32">
+            <Configuration>Debug</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|Win32">
+            <Configuration>Release</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Debug|x64">
+            <Configuration>Debug</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|x64">
+            <Configuration>Release</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+    </ItemGroup>
+    <PropertyGroup Label="Globals">
+        <VCProjectVersion>17.0</VCProjectVersion>
+        <Keyword>Win32Proj</Keyword>
+        <ProjectGuid>{3acde889-835f-4052-92bb-3d71ab0c5d8e}</ProjectGuid>
+        <RootNamespace>NetRainResources</RootNamespace>
+        <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+    <ImportGroup Label="ExtensionSettings">
+    </ImportGroup>
+    <ImportGroup Label="Shared">
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    </ImportGroup>
+    <PropertyGroup Label="UserMacros" />
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+        </ClCompile>
+        <Link>
+            <SubSystem>
+            </SubSystem>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+        </ClCompile>
+        <Link>
+            <SubSystem>
+            </SubSystem>
+            <EnableCOMDATFolding>true</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+        </ClCompile>
+        <Link>
+            <SubSystem>
+            </SubSystem>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+        </ClCompile>
+        <Link>
+            <SubSystem>
+            </SubSystem>
+            <EnableCOMDATFolding>true</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemGroup>
+        <ResourceCompile Include="app.rc" />
+    </ItemGroup>
+    <ItemGroup>
+        <ClInclude Include="framework.h" />
+        <ClInclude Include="pch.h" />
+        <ClInclude Include="Resource.h" />
+        <ClInclude Include="ResourceItem.h" />
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="pch.cpp">
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+        </ClCompile>
+        <ClCompile Include="ResourceItem.cpp" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\NetRain_Resources\resources\01.svg" />
+        <None Include="..\NetRain_Resources\resources\02.svg" />
+        <None Include="..\NetRain_Resources\resources\03.svg" />
+        <None Include="..\NetRain_Resources\resources\04.svg" />
+        <None Include="..\NetRain_Resources\resources\05.svg" />
+        <None Include="..\NetRain_Resources\resources\06.svg" />
+        <None Include="..\NetRain_Resources\resources\07.svg" />
+        <None Include="..\NetRain_Resources\resources\08.svg" />
+        <None Include="..\NetRain_Resources\resources\09.svg" />
+        <None Include="..\NetRain_Resources\resources\10.svg" />
+        <None Include="..\NetRain_Resources\resources\11.svg" />
+        <None Include="..\NetRain_Resources\resources\12.svg" />
+        <None Include="..\NetRain_Resources\resources\13.svg" />
+        <None Include="..\NetRain_Resources\resources\14.svg" />
+        <None Include="..\NetRain_Resources\resources\15.svg" />
+        <None Include="..\NetRain_Resources\resources\16.svg" />
+        <None Include="..\NetRain_Resources\resources\17.svg" />
+        <None Include="..\NetRain_Resources\resources\18.svg" />
+        <None Include="..\NetRain_Resources\resources\19.svg" />
+        <None Include="..\NetRain_Resources\resources\20.svg" />
+        <None Include="..\NetRain_Resources\resources\21.svg" />
+        <None Include="..\NetRain_Resources\resources\22.svg" />
+        <None Include="..\NetRain_Resources\resources\23.svg" />
+        <None Include="..\NetRain_Resources\resources\24.svg" />
+        <None Include="..\NetRain_Resources\resources\25.svg" />
+        <None Include="..\NetRain_Resources\resources\26.svg" />
+        <None Include="..\NetRain_Resources\resources\27.svg" />
+        <None Include="..\NetRain_Resources\resources\28.svg" />
+        <None Include="..\NetRain_Resources\resources\29.svg" />
+        <None Include="..\NetRain_Resources\resources\30.svg" />
+        <None Include="..\NetRain_Resources\resources\31.svg" />
+        <None Include="..\NetRain_Resources\resources\32.svg" />
+        <None Include="..\NetRain_Resources\resources\33.svg" />
+        <None Include="..\NetRain_Resources\resources\34.svg" />
+        <None Include="..\NetRain_Resources\resources\35.svg" />
+        <None Include="..\NetRain_Resources\resources\36.svg" />
+        <None Include="..\NetRain_Resources\resources\37.svg" />
+        <None Include="..\NetRain_Resources\resources\38.svg" />
+        <None Include="..\NetRain_Resources\resources\39.svg" />
+        <None Include="..\NetRain_Resources\resources\40.svg" />
+        <None Include="..\NetRain_Resources\resources\41.svg" />
+        <None Include="..\NetRain_Resources\resources\42.svg" />
+        <None Include="..\NetRain_Resources\resources\43.svg" />
+        <None Include="..\NetRain_Resources\resources\44.svg" />
+        <None Include="..\NetRain_Resources\resources\45.svg" />
+        <None Include="..\NetRain_Resources\resources\46.svg" />
+        <None Include="..\NetRain_Resources\resources\47.svg" />
+        <None Include="..\NetRain_Resources\resources\48.svg" />
+        <None Include="..\NetRain_Resources\resources\49.svg" />
+        <None Include="..\NetRain_Resources\resources\50.svg" />
+        <None Include="..\NetRain_Resources\resources\51.svg" />
+        <None Include="..\NetRain_Resources\resources\52.svg" />
+        <None Include="..\NetRain_Resources\resources\53.svg" />
+        <None Include="..\NetRain_Resources\resources\54.svg" />
+        <None Include="..\NetRain_Resources\resources\55.svg" />
+    </ItemGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+    <ImportGroup Label="ExtensionTargets">
+    </ImportGroup>
+</Project>

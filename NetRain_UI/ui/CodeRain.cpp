@@ -1,7 +1,7 @@
-#include "..\pch.h"
+#include "../pch.h"
 #include "CodeRain.h"
-#include "..\Resource.h"
-#include "..\utils\ResourceItem.h"
+#include "../../NetRain_Resources/Resource.h"
+#include "../../NetRain_Resources/ResourceItem.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -25,14 +25,14 @@ namespace N_CodeRain
 
         e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
 
-        Bitmap^ bmp = CodeRain::resourceToBitmap(IDR_VECTOR54);
+        Bitmap^ bmp = CodeRain::resourceToBitmap(154);
         CodeRain::paintImageGrid(bmp, codeRainBox, e);
         delete bmp;
     }
 
     Bitmap^ CodeRain::resourceToBitmap(int resource_id)
     {
-        ResourceItem res(resource_id, L"Vector");
+        N_CodeRain_Res::ResourceItem res(resource_id, L"Vector");
         char* res_str = res.GetResourceString();
 
         // Change resource string to null terminated

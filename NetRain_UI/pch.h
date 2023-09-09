@@ -9,9 +9,9 @@
 
 // add headers that you want to pre-compile here
 #include <cliext/list>
-#include <wtypes.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <wtypes.h>
 
 #endif //PCH_H

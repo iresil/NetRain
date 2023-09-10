@@ -28,18 +28,26 @@ namespace N_CodeRain
         char** vectors = res_h.GetAllVectors();
 
         List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
-        for (int i = 0; i < sizeof(vectors); i++)
+        Bitmap^ bmp = nullptr;
+        int i = 0;
+        do
         {
-            Bitmap^ bmp = CodeRain::resourceToBitmap(vectors[i]);
-            bmp_list->Add(bmp);
-        }
+            bmp = CodeRain::resourceToBitmap(vectors[i]);
+            if (bmp != nullptr)
+            {
+                bmp_list->Add(bmp);
+                i++;
+            }
+        } while (vectors[i] != nullptr);
         CodeRain::paintImageGrid(bmp_list, codeRainBox, e);
 
+        delete bmp;
         for (int i = 0; i < bmp_list->Count; i++)
         {
             delete bmp_list[i];
         }
         delete bmp_list;
+        delete vectors;
     }
 
     Bitmap^ CodeRain::resourceToBitmap(char* res_str)
@@ -54,8 +62,8 @@ namespace N_CodeRain
         struct NSVGimage* image = nsvgParse(res_str_nterm, "px", 96);
 
         Bitmap^ bmp = gcnew Bitmap(image->width, image->height);
-        GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding); 
-        Region^ reg = gcnew Region(); 
+        GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
+        Region^ reg = gcnew Region();
         Pen^ pen = gcnew Pen(Brushes::Black);
         Graphics^ graphics = Graphics::FromImage(bmp);
 

@@ -18,7 +18,7 @@ namespace N_CodeRain_Res
         HMODULE hModule = NULL;
         GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
             L"NetRain_Resources", &hModule);
-        
+
         LONG_PTR test = (LONG_PTR)this;
         EnumResourceNamesW(hModule, L"Vector",
             (ENUMRESNAMEPROCW)[](HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam) {
@@ -26,15 +26,15 @@ namespace N_CodeRain_Res
                 (*this_res).num_res++;
                 return TRUE;
             }, (LONG_PTR)this);
-        char** result = new char*[num_res];
+        char** result = new char* [num_res + 1];
         int vector = first_vector;
         for (int i = 1; i <= num_res; i++)
         {
             ResourceItem res(vector, L"Vector");
-            char* res_str = res.GetResourceString();
-            result[i - 1] = res_str;
+            result[i - 1] = res.GetResourceString();
             vector++;
         }
+        result[num_res] = nullptr;
         return result;
     }
 }

@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "CodeRain.h"
 #include "../../NetRain_Resources/ResourceHandler.h"
+#include "../../NetRain_CodeWeather/CodeCloud.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -105,9 +106,12 @@ namespace N_CodeRain
     void CodeRain::paintImageGrid(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
         Random^ rand = gcnew Random();
+        int columnNumber = 50;
+        //CodeCloud* cloud = new CodeCloud(columnNumber);
+        //Raindrop** raindrops = cloud->inspect_raindrops();
+        //Droplet** droplets = raindrops[0]->inspect_droplets();
 
         float emptySpacePercent = 0.15;
-        int columnNumber = 50;
         int width = codeRainBox->Width;
         int height = codeRainBox->Height;
 

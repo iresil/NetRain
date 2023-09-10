@@ -2,8 +2,8 @@
 
 #include "CodeRain.h"
 
-namespace NetRain {
-
+namespace NetRain
+{
     using namespace System;
     using namespace System::ComponentModel;
     using namespace System::Collections;

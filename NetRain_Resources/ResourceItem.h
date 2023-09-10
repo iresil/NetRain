@@ -1,6 +1,6 @@
 #pragma once
 
-namespace N_CodeRain
+namespace N_CodeRain_Res
 {
     struct Parameters {
         DWORD size_bytes = 0;
@@ -16,5 +16,6 @@ namespace N_CodeRain
         HRSRC hResource = nullptr;
         HGLOBAL hMemory = nullptr;
         Parameters p;
+        HMODULE GetCurrentModule();
     };
 }

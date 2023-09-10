@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ui\MatrixForm.h"
+#include "ui/MatrixForm.h"
 
 using namespace System;
 using namespace System::Windows::Forms;

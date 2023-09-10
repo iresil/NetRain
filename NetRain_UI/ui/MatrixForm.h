@@ -35,11 +35,13 @@ namespace NetRain
         }
     private:
         System::Windows::Forms::PictureBox^ codeRainBox;
+        System::Windows::Forms::Timer^ timerRefresh;
+        System::ComponentModel::IContainer^ components;
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
         /// <summary>
@@ -48,7 +50,9 @@ namespace NetRain
         /// </summary>
         void InitializeComponent(void)
         {
+            this->components = (gcnew System::ComponentModel::Container());
             this->codeRainBox = (gcnew System::Windows::Forms::PictureBox());
+            this->timerRefresh = (gcnew System::Windows::Forms::Timer(this->components));
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->codeRainBox))->BeginInit();
             this->SuspendLayout();
             // 
@@ -61,6 +65,12 @@ namespace NetRain
             this->codeRainBox->TabIndex = 4;
             this->codeRainBox->TabStop = false;
             this->codeRainBox->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MatrixForm::codeRainBox_Paint);
+            // 
+            // timerRefresh
+            // 
+            this->timerRefresh->Enabled = true;
+            this->timerRefresh->Interval = 200;
+            this->timerRefresh->Tick += gcnew System::EventHandler(this, &MatrixForm::timerRefresh_Tick);
             // 
             // MatrixForm
             // 
@@ -80,6 +90,10 @@ namespace NetRain
 
         System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
             N_CodeRain::CodeRain::paint(codeRainBox, e);
+        }
+
+        System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e) {
+            codeRainBox->Refresh();
         }
     }; // end of class MatrixForm
 } // end of namespace NetRain

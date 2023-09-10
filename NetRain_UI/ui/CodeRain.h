@@ -2,14 +2,16 @@
 
 namespace N_CodeRain
 {
-    using namespace System::Windows::Forms;
     using namespace System::Drawing;
+    using namespace System::Windows::Forms;
+    using namespace System::Collections::Generic;
 
-    class CodeRain {
+    class CodeRain
+    {
     public:
         static void paint(PictureBox^ codeRainBox, PaintEventArgs^ e);
     private:
-        static Bitmap^ resourceToBitmap(int resource_id);
-        static void paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e);
+        static Bitmap^ resourceToBitmap(char* res_str);
+        static void paintImageGrid(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

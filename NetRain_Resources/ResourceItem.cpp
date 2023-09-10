@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "ResourceItem.h"
 
-namespace N_CodeRain_Res {
-    ResourceItem::ResourceItem(int resource_id, LPCWSTR resource_class) {
+namespace N_CodeRain_Res
+{
+    ResourceItem::ResourceItem(int resource_id, LPCWSTR resource_class)
+    {
         HMODULE hModule = GetCurrentModule();
         hResource = FindResource(hModule, MAKEINTRESOURCE(resource_id), resource_class);
 

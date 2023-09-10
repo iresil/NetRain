@@ -1,7 +1,6 @@
 #include "../pch.h"
 #include "CodeRain.h"
-#include "../../NetRain_Resources/Resource.h"
-#include "../../NetRain_Resources/ResourceItem.h"
+#include "../../NetRain_Resources/ResourceHandler.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -25,16 +24,26 @@ namespace N_CodeRain
 
         e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
 
-        Bitmap^ bmp = CodeRain::resourceToBitmap(154);
-        CodeRain::paintImageGrid(bmp, codeRainBox, e);
-        delete bmp;
+        N_CodeRain_Res::ResourceHandler res_h;
+        char** vectors = res_h.GetAllVectors();
+
+        List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
+        for (int i = 0; i < sizeof(vectors); i++)
+        {
+            Bitmap^ bmp = CodeRain::resourceToBitmap(vectors[i]);
+            bmp_list->Add(bmp);
+        }
+        CodeRain::paintImageGrid(bmp_list, codeRainBox, e);
+
+        for (int i = 0; i < bmp_list->Count; i++)
+        {
+            delete bmp_list[i];
+        }
+        delete bmp_list;
     }
 
-    Bitmap^ CodeRain::resourceToBitmap(int resource_id)
+    Bitmap^ CodeRain::resourceToBitmap(char* res_str)
     {
-        N_CodeRain_Res::ResourceItem res(resource_id, L"Vector");
-        char* res_str = res.GetResourceString();
-
         // Change resource string to null terminated
         size_t str_len = strlen(res_str);
         size_t str_len_nterm = str_len + 1;
@@ -85,8 +94,10 @@ namespace N_CodeRain
         return bmp;
     }
 
-    void CodeRain::paintImageGrid(Bitmap^ image, PictureBox^ codeRainBox, PaintEventArgs^ e)
+    void CodeRain::paintImageGrid(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
+        Random^ rand = gcnew Random();
+
         float emptySpacePercent = 0.15;
         int columnNumber = 50;
         int width = codeRainBox->Width;
@@ -117,8 +128,11 @@ namespace N_CodeRain
                 cm->Matrix33 = opacity;
                 ImageAttributes^ ia = gcnew ImageAttributes();
                 ia->SetColorMatrix(cm);
-                e->Graphics->DrawImage(image, System::Drawing::Rectangle(firstColumnBuffer + x * fullGridCellSize, firstRowBuffer + y * fullGridCellSize, spacedGridCellSize, spacedGridCellSize),
-                    0, 0, image->Width, image->Height, GraphicsUnit::Pixel, ia);
+
+                int random = rand->Next(0, images->Count);
+
+                e->Graphics->DrawImage(images[random], System::Drawing::Rectangle(firstColumnBuffer + x * fullGridCellSize, firstRowBuffer + y * fullGridCellSize, spacedGridCellSize, spacedGridCellSize),
+                    0, 0, images[random]->Width, images[random]->Height, GraphicsUnit::Pixel, ia);
 
                 delete ia;
                 delete cm;

@@ -58,6 +58,7 @@ namespace NetRain
             // 
             // codeRainBox
             // 
+            this->codeRainBox->BackColor = System::Drawing::Color::Black;
             this->codeRainBox->Dock = System::Windows::Forms::DockStyle::Fill;
             this->codeRainBox->Location = System::Drawing::Point(0, 0);
             this->codeRainBox->Name = L"codeRainBox";
@@ -69,13 +70,14 @@ namespace NetRain
             // timerRefresh
             // 
             this->timerRefresh->Enabled = true;
-            this->timerRefresh->Interval = 200;
+            this->timerRefresh->Interval = 50;
             this->timerRefresh->Tick += gcnew System::EventHandler(this, &MatrixForm::timerRefresh_Tick);
             // 
             // MatrixForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+            this->BackColor = System::Drawing::Color::Black;
             this->ClientSize = System::Drawing::Size(723, 589);
             this->Controls->Add(this->codeRainBox);
             this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
@@ -89,7 +91,7 @@ namespace NetRain
 #pragma endregion
 
         System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-            N_CodeRain::CodeRain::paint(codeRainBox, e);
+            N_CodeRain::CodeRain::getInstance().paint(codeRainBox, e);
         }
 
         System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e) {

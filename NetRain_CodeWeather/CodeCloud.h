@@ -8,7 +8,7 @@ namespace N_CodeRain
     public:
         CodeCloud(int raindrops);
         Raindrop** inspect_raindrops();
-        Raindrop** MakeItRain();
+        void MakeItRain();
     private:
         int raindrop_count;
         Raindrop** raindrops;

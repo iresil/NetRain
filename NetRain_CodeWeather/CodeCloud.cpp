@@ -13,7 +13,7 @@ namespace N_CodeRain
             int fall_seconds_mult_rand = 1 + rand() % (4 - 1);
             int drop_count = 6;
             int** symbols_rand = new int*[tail_length_rand + 1];
-            int* change_seconds_mult_rand = new int[tail_length_rand + 1];
+            int* change_seconds_mult = new int[tail_length_rand + 1];
             float* opacity = new float[tail_length_rand + 1];
             for (int j = 0; j < tail_length_rand; j++)
             {
@@ -25,15 +25,15 @@ namespace N_CodeRain
                 symbols_tmp[drop_count] = NULL;
                 symbols_rand[j] = *&symbols_tmp;
 
-                change_seconds_mult_rand[j] = 1 + rand() % (500 - 200);
+                change_seconds_mult[j] = j + 1;
 
-                opacity[j] = 100 - j;
+                opacity[j] = (drop_count / 100.0) * (tail_length_rand - j);
             }
             symbols_rand[tail_length_rand] = NULL;
-            change_seconds_mult_rand[tail_length_rand] = NULL;
+            change_seconds_mult[tail_length_rand] = NULL;
             opacity[tail_length_rand] = NULL;
             *(raindrops + i) = new Raindrop(tail_length_rand, fall_seconds_mult_rand,
-                symbols_rand, change_seconds_mult_rand, opacity);
+                symbols_rand, change_seconds_mult, opacity);
         }
         raindrops[raindrop_count] = NULL;
         this->raindrops = raindrops;
@@ -44,8 +44,11 @@ namespace N_CodeRain
         return this->raindrops;
     }
 
-    Raindrop** CodeCloud::MakeItRain()
+    void CodeCloud::MakeItRain()
     {
-        return this->raindrops;
+        for (int i = 0; i < this->raindrop_count; i++)
+        {
+            raindrops[i]->fall();
+        }
     }
 }

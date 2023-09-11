@@ -59,10 +59,11 @@ namespace N_CodeRain
         char* res_str_nterm = new char[str_len_nterm];
         strcpy(res_str_nterm, res_str);
         res_str_nterm[str_len_nterm] = '\0';
+        float scale = 0.1f;
 
         struct NSVGimage* image = nsvgParse(res_str_nterm, "px", 96);
 
-        Bitmap^ bmp = gcnew Bitmap(image->width, image->height);
+        Bitmap^ bmp = gcnew Bitmap(image->width * scale, image->height * scale);
         GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
         Region^ reg = gcnew Region();
         Pen^ pen = gcnew Pen(Brushes::Black);
@@ -74,7 +75,7 @@ namespace N_CodeRain
                 int point_count = path->npts;
                 for (int i = 0; i < point_count - 1; i += 3) {
                     float* p = &path->pts[i * 2];
-                    gpath->AddBezier(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
+                    gpath->AddBezier(p[0] * scale, p[1] * scale, p[2] * scale, p[3] * scale, p[4] * scale, p[5] * scale, p[6] * scale, p[7] * scale);
                 }
                 graphics->DrawPath(pen, gpath);  // Draw outline
 

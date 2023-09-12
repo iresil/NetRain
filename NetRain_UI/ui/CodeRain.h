@@ -32,10 +32,10 @@ namespace N_CodeRain
         N_CodeRain_Res::ResourceHandler * resourceHandler;
         char** vectors;
 
-        CodeCloud* codeCloud;
+        CodeCloud* codeCloud[2];
         int raindrops;
 
         Bitmap^ resourceToBitmap(char* res_str);
-        void paintFromCloud(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
+        void paintFromCloud(CodeCloud* codeCloud, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

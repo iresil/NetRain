@@ -35,7 +35,8 @@ namespace N_CodeRain
         Managed::images = bmp_list;
 
         this->raindrops = raindrops;
-        this->codeCloud = new CodeCloud(raindrops);
+        this->codeCloud[0] = new CodeCloud(raindrops);
+        this->codeCloud[1] = new CodeCloud(raindrops);
     }
 
     CodeRain::~CodeRain()
@@ -49,6 +50,10 @@ namespace N_CodeRain
         }
         delete Managed::images;
 
+        for (int i = 0; i < 2; i++)
+        {
+            delete this->codeCloud[i];
+        }
         delete this->codeCloud;
     }
 
@@ -70,7 +75,8 @@ namespace N_CodeRain
         
         e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
         
-        CodeRain::paintFromCloud(Managed::images, codeRainBox, e);
+        CodeRain::paintFromCloud(this->codeCloud[0], Managed::images, codeRainBox, e);
+        CodeRain::paintFromCloud(this->codeCloud[1], Managed::images, codeRainBox, e);
     }
 
     Bitmap^ CodeRain::resourceToBitmap(char* res_str)
@@ -127,7 +133,7 @@ namespace N_CodeRain
         return bmp;
     }
 
-    void CodeRain::paintFromCloud(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e)
+    void CodeRain::paintFromCloud(CodeCloud* codeCloud, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
         float emptySpacePercent = 0.15;
         int width = codeRainBox->Width;
@@ -141,7 +147,7 @@ namespace N_CodeRain
         float firstColumnBuffer = fullGridCellSize * emptySpacePercent / 2;
         float firstRowBuffer = fullGridCellSize * emptySpacePercent / 4;
 
-        Raindrop** raindrops = this->codeCloud->inspect_raindrops();
+        Raindrop** raindrops = codeCloud->inspect_raindrops();
         int x = 0;
         do
         {
@@ -192,6 +198,6 @@ namespace N_CodeRain
             }
             x++;
         } while (raindrops[x] != NULL);
-        this->codeCloud->MakeItRain();
+        codeCloud->MakeItRain();
     }
 }

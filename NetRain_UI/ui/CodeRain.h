@@ -16,6 +16,11 @@ namespace N_CodeRain
         {
         public:
             static List<Bitmap^>^ images = nullptr;
+            static Color^ droplet_default_inner = nullptr;
+            static Color^ droplet_default_outline = nullptr;
+            static List<Color>^ droplet_inner = nullptr;
+            static List<Color>^ droplet_glow = nullptr;
+            static List<Color>^ droplet_first = nullptr;
         };
 
         static CodeRain* getInstance();
@@ -36,6 +41,6 @@ namespace N_CodeRain
         int raindrops;
 
         Bitmap^ resourceToBitmap(char* res_str);
-        void paintFromCloud(CodeCloud* codeCloud, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
+        void paintFromCloud(CodeCloud** codeCloud, int offs, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

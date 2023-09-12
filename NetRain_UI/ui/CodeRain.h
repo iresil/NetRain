@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../NetRain_Resources/ResourceHandler.h"
 #include "../../NetRain_CodeWeather/CodeCloud.h"
 
 namespace N_CodeRain
@@ -11,17 +12,30 @@ namespace N_CodeRain
     class CodeRain
     {
     public:
-        static CodeRain& getInstance();
-        CodeRain(int raindrops);
+        ref class Managed
+        {
+        public:
+            static List<Bitmap^>^ images = nullptr;
+        };
+
+        static CodeRain* getInstance();
         void paint(PictureBox^ codeRainBox, PaintEventArgs^ e);
     private:
-        CodeCloud* codeCloud;
-        int raindrops;
-        Bitmap^ resourceToBitmap(char* res_str);
-        void paintFromCloud(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
+        CodeRain(int raindrops);
+        static CodeRain* instancePtr;
 
         ~CodeRain();
         CodeRain(const CodeRain&) = delete;
+        CodeRain(CodeRain& other) = delete;
         CodeRain& operator=(const CodeRain&) = delete;
+
+        N_CodeRain_Res::ResourceHandler * resourceHandler;
+        char** vectors;
+
+        CodeCloud* codeCloud;
+        int raindrops;
+
+        Bitmap^ resourceToBitmap(char* res_str);
+        void paintFromCloud(List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

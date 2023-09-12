@@ -91,7 +91,7 @@ namespace NetRain
 #pragma endregion
 
         System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-            N_CodeRain::CodeRain::getInstance().paint(codeRainBox, e);
+            N_CodeRain::CodeRain::getInstance()->paint(codeRainBox, e);
         }
 
         System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e) {

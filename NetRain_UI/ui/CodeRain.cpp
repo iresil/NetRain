@@ -1,6 +1,5 @@
 #include "../pch.h"
 #include "CodeRain.h"
-#include "../../NetRain_Resources/ResourceHandler.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -14,77 +13,82 @@ namespace N_CodeRain
     using namespace System::Drawing::Drawing2D;
     using namespace System::Collections::Generic;
 
+    CodeRain* CodeRain::instancePtr = NULL;
+
     CodeRain::CodeRain(int raindrops)
     {
-        this->raindrops = raindrops;
-        this->codeCloud = new CodeCloud(raindrops);
-    }
-
-    CodeRain::~CodeRain()
-    {
-        delete this->codeCloud;
-    }
-
-    CodeRain& CodeRain::getInstance() {
-        static CodeRain& instance = *(new CodeRain(60));
-        return instance;
-    }
-
-    void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
-    {
-        e->Graphics->SmoothingMode = SmoothingMode::HighQuality;
-
-        GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
-        Region^ reg = gcnew Region();
-        Pen^ pen = gcnew Pen(Brushes::Black);
-
-        e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
-
-        N_CodeRain_Res::ResourceHandler res_h;
-        char** vectors = res_h.GetAllVectors();
+        this->resourceHandler = new N_CodeRain_Res::ResourceHandler();
+        this->vectors = resourceHandler->GetAllVectors();
 
         List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
         Bitmap^ bmp = nullptr;
         int i = 0;
         do
         {
-            bmp = CodeRain::resourceToBitmap(vectors[i]);
+            bmp = CodeRain::resourceToBitmap(this->vectors[i]);
             if (bmp != nullptr)
             {
                 bmp_list->Add(bmp);
                 i++;
             }
-        } while (vectors[i] != nullptr);
-        CodeRain::paintFromCloud(bmp_list, codeRainBox, e);
+        } while (this->vectors[i] != nullptr);
+        Managed::images = bmp_list;
 
-        delete bmp;
-        for (int i = 0; i < bmp_list->Count; i++)
+        this->raindrops = raindrops;
+        this->codeCloud = new CodeCloud(raindrops);
+    }
+
+    CodeRain::~CodeRain()
+    {
+        delete this->resourceHandler;
+        delete this->vectors;
+
+        for (int i = 0; i < Managed::images->Count; i++)
         {
-            delete bmp_list[i];
+            delete Managed::images[i];
         }
-        delete bmp_list;
-        delete vectors;
+        delete Managed::images;
+
+        delete this->codeCloud;
+    }
+
+    CodeRain* CodeRain::getInstance() {
+        if (instancePtr == NULL)
+        {
+            instancePtr = new CodeRain(60);
+            return instancePtr;
+        }
+        else
+        {
+            return instancePtr;
+        }
+    }
+
+    void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
+    {
+        e->Graphics->SmoothingMode = SmoothingMode::HighQuality;
+        
+        e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
+        
+        CodeRain::paintFromCloud(Managed::images, codeRainBox, e);
     }
 
     Bitmap^ CodeRain::resourceToBitmap(char* res_str)
     {
-        // Change resource string to null terminated
-        size_t str_len = strlen(res_str);
-        size_t str_len_nterm = str_len + 1;
-        char* res_str_nterm = new char[str_len_nterm];
-        strcpy(res_str_nterm, res_str);
-        res_str_nterm[str_len_nterm] = '\0';
         float scale = 0.09f;
 
-        struct NSVGimage* image = nsvgParse(res_str_nterm, "px", 96);
-
+        size_t str_len = strlen(res_str);
+        char* res_str_copy = new char[str_len];
+        strcpy(res_str_copy, res_str);
+        struct NSVGimage* image = nsvgParse(res_str_copy, "px", 96);
+        
         Bitmap^ bmp = gcnew Bitmap(image->width * scale, image->height * scale);
         GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
         Region^ reg = gcnew Region();
         Pen^ pen = gcnew Pen(Color::FromArgb(32, 155, 63), 3);
         Graphics^ graphics = Graphics::FromImage(bmp);
         Matrix^ mx = gcnew Matrix(1.0f / 1.2f, 0, 0, 1.0f / 1.2f, -(1.0f / 1.2f), -(1.0f / 1.2f));
-
+        
         for (NSVGshape* shape = image->shapes; shape != NULL; shape = shape->next) {
             NSVGpath* path = shape->paths;
             while (path != NULL) {
@@ -96,7 +100,7 @@ namespace N_CodeRain
                 graphics->SmoothingMode = SmoothingMode::AntiAlias;
                 graphics->Transform = mx;
                 graphics->DrawPath(pen, gpath);  // Draw outline
-
+        
                 path = path->next;
                 if (path != NULL)
                 {
@@ -111,15 +115,15 @@ namespace N_CodeRain
                 gpath->Reset();
             }
         }
-
+        
         delete mx;
         delete pen;
         delete reg;
         delete gpath;
         delete graphics;
-
+        
         nsvgDelete(image);
-
+        
         return bmp;
     }
 

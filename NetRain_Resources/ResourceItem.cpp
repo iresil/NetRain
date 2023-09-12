@@ -35,9 +35,19 @@ namespace N_CodeRain_Res
 
     char* ResourceItem::GetResourceString() const
     {
-        char* dst = NULL;
+        char* res_str = NULL;
+        char* res_str_nterm = NULL;
+        size_t str_len = 0;
         if (p.ptr != nullptr)
-            dst = reinterpret_cast<char*>(p.ptr);
-        return dst;
+        {
+            str_len = p.size_bytes;
+            size_t str_len_nterm = str_len + 1;
+            res_str = reinterpret_cast<char*>(p.ptr);
+
+            res_str_nterm = new char[str_len_nterm];
+            strcpy_s(res_str_nterm, str_len_nterm, res_str);
+            res_str_nterm[str_len_nterm] = NULL;
+        }
+        return res_str_nterm;
     }
 }

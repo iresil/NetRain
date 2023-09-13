@@ -32,11 +32,11 @@ namespace N_CodeRain
         Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
         Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 83, 100));
-        Managed::droplet_default_inner->Add(Color::FromArgb(78, 178, 214));
-        Managed::droplet_inner->Add(Color::FromArgb(37, 119, 204));
-        Managed::droplet_glow->Add(Color::FromArgb(192, 215, 255));
-        Managed::droplet_first->Add(Color::FromArgb(206, 224, 255));
+        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 100, 43));
+        Managed::droplet_default_inner->Add(Color::FromArgb(138, 214, 108));
+        Managed::droplet_inner->Add(Color::FromArgb(87, 204, 79));
+        Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
+        Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
 
         Managed::images = gcnew List<List<Bitmap^>^>();
         Bitmap^ bmp = nullptr;

@@ -20,34 +20,41 @@ namespace N_CodeRain
         this->resourceHandler = new N_CodeRain_Res::ResourceHandler();
         this->vectors = resourceHandler->GetAllVectors();
 
-        Managed::droplet_default_inner = Color::White;
-        Managed::droplet_default_outline = Color::Gray;
-
+        Managed::droplet_default_outline = gcnew List<Color>();
+        Managed::droplet_default_inner = gcnew List<Color>();
         Managed::droplet_inner = gcnew List<Color>();
         Managed::droplet_glow = gcnew List<Color>();
         Managed::droplet_first = gcnew List<Color>();
 
-        Managed::droplet_inner->Add(Color::LightGreen);
-        Managed::droplet_glow->Add(Color::FromArgb(32, 155, 63));
-        Managed::droplet_first->Add(Color::FromArgb(248, 255, 216));
+        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 100, 43));
+        Managed::droplet_default_inner->Add(Color::FromArgb(78, 214, 108));
+        Managed::droplet_inner->Add(Color::FromArgb(37, 204, 79));
+        Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
+        Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
 
-        Managed::droplet_inner->Add(Color::Orange);
-        Managed::droplet_glow->Add(Color::FromArgb(155, 63, 32));
-        Managed::droplet_first->Add(Color::FromArgb(255, 248, 216));
+        Managed::droplet_default_outline->Add(Color::FromArgb(100, 100, 43, 27));
+        Managed::droplet_default_inner->Add(Color::FromArgb(214, 108, 78));
+        Managed::droplet_inner->Add(Color::FromArgb(204, 79, 37));
+        Managed::droplet_glow->Add(Color::FromArgb(255, 215, 192));
+        Managed::droplet_first->Add(Color::FromArgb(255, 224, 206));
 
-        List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
+        Managed::images = gcnew List<List<Bitmap^>^>();
         Bitmap^ bmp = nullptr;
-        int i = 0;
-        do
+        for (int i = 0; i < 2; i++)
         {
-            bmp = CodeRain::resourceToBitmap(this->vectors[i]);
-            if (bmp != nullptr)
+            List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
+            int j = 0;
+            do
             {
-                bmp_list->Add(bmp);
-                i++;
-            }
-        } while (this->vectors[i] != nullptr);
-        Managed::images = bmp_list;
+                bmp = CodeRain::resourceToBitmap(this->vectors[j], i);
+                if (bmp != nullptr)
+                {
+                    bmp_list->Add(bmp);
+                    j++;
+                }
+            } while (this->vectors[j] != nullptr);
+            Managed::images->Add(bmp_list);
+        }
 
         this->raindrops = raindrops;
         this->codeCloud[0] = new CodeCloud(raindrops);
@@ -61,6 +68,10 @@ namespace N_CodeRain
 
         for (int i = 0; i < Managed::images->Count; i++)
         {
+            for (int j = 0; j < Managed::images[i]->Count; j++)
+            {
+                delete Managed::images[i][j];
+            }
             delete Managed::images[i];
         }
         delete Managed::images;
@@ -69,6 +80,8 @@ namespace N_CodeRain
         {
             delete this->codeCloud[i];
 
+            delete Managed::droplet_default_outline[i];
+            delete Managed::droplet_default_inner[i];
             delete Managed::droplet_inner[i];
             delete Managed::droplet_glow[i];
             delete Managed::droplet_first[i];
@@ -98,11 +111,11 @@ namespace N_CodeRain
         
         e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
         
-        CodeRain::paintFromCloud(this->codeCloud, 0, Managed::images, codeRainBox, e);
-        CodeRain::paintFromCloud(this->codeCloud, 1, Managed::images, codeRainBox, e);
+        CodeRain::paintFromCloud(0, codeRainBox, e);
+        CodeRain::paintFromCloud(1, codeRainBox, e);
     }
 
-    Bitmap^ CodeRain::resourceToBitmap(char* res_str)
+    Bitmap^ CodeRain::resourceToBitmap(char* res_str, int offs)
     {
         float scale = 0.09f;
 
@@ -114,7 +127,7 @@ namespace N_CodeRain
         Bitmap^ bmp = gcnew Bitmap(image->width * scale, image->height * scale);
         GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
         Region^ reg = gcnew Region();
-        Pen^ pen = gcnew Pen(*Managed::droplet_default_outline, 3);
+        Pen^ pen = gcnew Pen(Managed::droplet_default_outline[offs], 3);
         Graphics^ graphics = Graphics::FromImage(bmp);
         Matrix^ mx = gcnew Matrix(1.0f / 1.2f, 0, 0, 1.0f / 1.2f, -(1.0f / 1.2f), -(1.0f / 1.2f));
         
@@ -139,7 +152,7 @@ namespace N_CodeRain
                 }
                 else
                 {
-                    Brush^ br = gcnew SolidBrush(*Managed::droplet_default_inner);
+                    Brush^ br = gcnew SolidBrush(Managed::droplet_default_inner[offs]);
                     graphics->FillPath(br, gpath);  // Fill outline
                     delete br;
                 }
@@ -158,7 +171,7 @@ namespace N_CodeRain
         return bmp;
     }
 
-    void CodeRain::paintFromCloud(CodeCloud** codeCloud, int offs, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e)
+    void CodeRain::paintFromCloud(int offs, PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
         float emptySpacePercent = 0.15;
         int width = codeRainBox->Width;
@@ -172,7 +185,7 @@ namespace N_CodeRain
         float firstColumnBuffer = fullGridCellSize * emptySpacePercent / 2;
         float firstRowBuffer = fullGridCellSize * emptySpacePercent / 4;
 
-        Raindrop** raindrops = codeCloud[offs]->inspect_raindrops();
+        Raindrop** raindrops = this->codeCloud[offs]->inspect_raindrops();
         int x = 0;
         do
         {
@@ -194,25 +207,15 @@ namespace N_CodeRain
                 array<ColorMap^>^ cmp_arr = nullptr;
                 if (i == 0)
                 {
-                    cmp->OldColor = *Managed::droplet_default_inner;
+                    cmp->OldColor = Managed::droplet_default_inner[offs];
                     cmp->NewColor = Managed::droplet_first[offs];
                 }
-                else
-                {
-                    cmp->OldColor = *Managed::droplet_default_inner;
-                    cmp->NewColor = Managed::droplet_inner[offs];
-                }
 
-                ColorMap^ cmp_border = gcnew ColorMap();
-                cmp_border->OldColor = *Managed::droplet_default_outline;
-                cmp_border->NewColor = Managed::droplet_glow[offs];
-
-                cmp_arr = gcnew array<ColorMap^> { cmp, cmp_border };
+                cmp_arr = gcnew array<ColorMap^> { cmp };
 
                 ia->SetRemapTable(cmp_arr);
 
                 delete cmp_arr;
-                delete cmp_border;
                 delete cmp;
 
                 ia->SetColorMatrix(cmx);
@@ -226,7 +229,7 @@ namespace N_CodeRain
                     firstRowBuffer + (y + droplet_offset) * fullGridCellSize,
                     spacedGridCellSize, spacedGridCellSize);
 
-                e->Graphics->DrawImage(images[symbol], *rect, 0, 0, images[symbol]->Width, images[symbol]->Height,
+                e->Graphics->DrawImage(Managed::images[offs][symbol], *rect, 0, 0, Managed::images[offs][symbol]->Width, Managed::images[offs][symbol]->Height,
                     GraphicsUnit::Pixel, ia);
 
                 delete rect;
@@ -237,6 +240,6 @@ namespace N_CodeRain
             }
             x++;
         } while (raindrops[x] != NULL);
-        codeCloud[offs]->MakeItRain();
+        this->codeCloud[offs]->MakeItRain();
     }
 }

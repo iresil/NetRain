@@ -15,9 +15,9 @@ namespace N_CodeRain
         ref class Managed
         {
         public:
-            static List<Bitmap^>^ images = nullptr;
-            static Color^ droplet_default_inner = nullptr;
-            static Color^ droplet_default_outline = nullptr;
+            static List<List<Bitmap^>^>^ images = nullptr;
+            static List<Color>^ droplet_default_outline = nullptr;
+            static List<Color>^ droplet_default_inner = nullptr;
             static List<Color>^ droplet_inner = nullptr;
             static List<Color>^ droplet_glow = nullptr;
             static List<Color>^ droplet_first = nullptr;
@@ -40,7 +40,7 @@ namespace N_CodeRain
         CodeCloud* codeCloud[2];
         int raindrops;
 
-        Bitmap^ resourceToBitmap(char* res_str);
-        void paintFromCloud(CodeCloud** codeCloud, int offs, List<Bitmap^>^ images, PictureBox^ codeRainBox, PaintEventArgs^ e);
+        Bitmap^ resourceToBitmap(char* res_str, int offs);
+        void paintFromCloud(int offs, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

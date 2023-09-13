@@ -51,6 +51,7 @@ namespace N_CodeRain
 
     void Raindrop::reset_droplet(int rows)
     {
-        this->droplet_offset = (rand() % 30) - rows;
+        this->fall_seconds_multiplier = 1 + rand() % (4 - 1);
+        this->droplet_offset = (rand() % 30) - rows - this->tail_length;
     }
 }

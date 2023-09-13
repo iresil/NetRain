@@ -32,11 +32,11 @@ namespace N_CodeRain
         Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
         Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(100, 100, 43, 27));
-        Managed::droplet_default_inner->Add(Color::FromArgb(214, 108, 78));
-        Managed::droplet_inner->Add(Color::FromArgb(204, 79, 37));
-        Managed::droplet_glow->Add(Color::FromArgb(255, 215, 192));
-        Managed::droplet_first->Add(Color::FromArgb(255, 224, 206));
+        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 83, 100));
+        Managed::droplet_default_inner->Add(Color::FromArgb(78, 178, 214));
+        Managed::droplet_inner->Add(Color::FromArgb(37, 119, 204));
+        Managed::droplet_glow->Add(Color::FromArgb(192, 215, 255));
+        Managed::droplet_first->Add(Color::FromArgb(206, 224, 255));
 
         Managed::images = gcnew List<List<Bitmap^>^>();
         Bitmap^ bmp = nullptr;
@@ -209,7 +209,7 @@ namespace N_CodeRain
                 {
                     cmp->OldColor = Managed::droplet_default_inner[offs];
                     cmp->NewColor = Managed::droplet_first[offs];
-                    ia->SetGamma(0.25);
+                    ia->SetGamma(0.3);
                 }
 
                 cmp_arr = gcnew array<ColorMap^> { cmp };

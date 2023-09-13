@@ -209,6 +209,7 @@ namespace N_CodeRain
                 {
                     cmp->OldColor = Managed::droplet_default_inner[offs];
                     cmp->NewColor = Managed::droplet_first[offs];
+                    ia->SetGamma(0.25);
                 }
 
                 cmp_arr = gcnew array<ColorMap^> { cmp };
@@ -229,8 +230,10 @@ namespace N_CodeRain
                     firstRowBuffer + (y + droplet_offset) * fullGridCellSize,
                     spacedGridCellSize, spacedGridCellSize);
 
-                e->Graphics->DrawImage(Managed::images[offs][symbol], *rect, 0, 0, Managed::images[offs][symbol]->Width, Managed::images[offs][symbol]->Height,
+                List<Bitmap^>^ imgs = Managed::images[offs];
+                e->Graphics->DrawImage(imgs[symbol], *rect, 0, 0, imgs[symbol]->Width, imgs[symbol]->Height,
                     GraphicsUnit::Pixel, ia);
+                delete imgs;
 
                 delete rect;
                 delete ia;

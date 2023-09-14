@@ -107,9 +107,10 @@ namespace N_CodeRain
 
     void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
-        e->Graphics->SmoothingMode = SmoothingMode::HighQuality;
-        
-        e->Graphics->FillRectangle(Brushes::Black, 0, 0, codeRainBox->Width, codeRainBox->Height);
+        e->Graphics->SmoothingMode = SmoothingMode::AntiAlias;
+        e->Graphics->CompositingMode = CompositingMode::SourceCopy;
+        e->Graphics->InterpolationMode = InterpolationMode::NearestNeighbor;
+        e->Graphics->CompositingQuality = CompositingQuality::HighSpeed;
         
         CodeRain::paintFromCloud(0, codeRainBox, e);
         CodeRain::paintFromCloud(1, codeRainBox, e);
@@ -196,48 +197,54 @@ namespace N_CodeRain
             int y = 0;
             for (int i = tail_length - 1; i >= 0; i--)
             {
-                int symbol = droplets[i]->get_next_symbol(raindrops[x]->get_fall_seconds_multiplier());
-                float opacity = droplets[i]->get_opacity();
+                int destX = firstColumnBuffer + x * fullGridCellSize;
+                int destY = firstRowBuffer + (y + droplet_offset) * fullGridCellSize;
+                int destWidth = spacedGridCellSize;
+                int destHeight = spacedGridCellSize;
 
-                ColorMatrix^ cmx = gcnew ColorMatrix();
-                cmx->Matrix33 = opacity;
-                ImageAttributes^ ia = gcnew ImageAttributes();
-
-                ColorMap^ cmp = gcnew ColorMap();
-                array<ColorMap^>^ cmp_arr = nullptr;
-                if (i == 0)
+                if (destX >= 0 && destY >= 0 && destX <= width && destY <= height)
                 {
-                    cmp->OldColor = Managed::droplet_default_inner[offs];
-                    cmp->NewColor = Managed::droplet_first[offs];
-                    ia->SetGamma(0.3);
+                    int symbol = droplets[i]->get_next_symbol(raindrops[x]->get_fall_seconds_multiplier());
+                    float opacity = droplets[i]->get_opacity();
+
+                    ColorMatrix^ cmx = gcnew ColorMatrix();
+                    cmx->Matrix33 = opacity;
+                    ImageAttributes^ ia = gcnew ImageAttributes();
+
+                    ColorMap^ cmp = gcnew ColorMap();
+                    array<ColorMap^>^ cmp_arr = nullptr;
+                    if (i == 0)
+                    {
+                        cmp->OldColor = Managed::droplet_default_inner[offs];
+                        cmp->NewColor = Managed::droplet_first[offs];
+                        ia->SetGamma(0.3);
+                    }
+
+                    cmp_arr = gcnew array<ColorMap^> { cmp };
+
+                    ia->SetRemapTable(cmp_arr);
+
+                    delete cmp_arr;
+                    delete cmp;
+
+                    ia->SetColorMatrix(cmx);
+
+                    System::Drawing::Rectangle^ rect = gcnew System::Drawing::Rectangle(destX, destY, destWidth, destHeight);
+
+                    List<Bitmap^>^ imgs = Managed::images[offs];
+                    e->Graphics->DrawImage(imgs[symbol], *rect, 0, 0, imgs[symbol]->Width, imgs[symbol]->Height,
+                        GraphicsUnit::Pixel, ia);
+                    delete imgs;
+
+                    delete rect;
+                    delete ia;
+                    delete cmx;
                 }
-
-                cmp_arr = gcnew array<ColorMap^> { cmp };
-
-                ia->SetRemapTable(cmp_arr);
-
-                delete cmp_arr;
-                delete cmp;
-
-                ia->SetColorMatrix(cmx);
 
                 if (i == tail_length - 1 && y + droplet_offset > rowNumber)
                 {
                     raindrops[x]->reset_droplet(rowNumber);
                 }
-
-                System::Drawing::Rectangle^ rect = gcnew System::Drawing::Rectangle(firstColumnBuffer + x * fullGridCellSize,
-                    firstRowBuffer + (y + droplet_offset) * fullGridCellSize,
-                    spacedGridCellSize, spacedGridCellSize);
-
-                List<Bitmap^>^ imgs = Managed::images[offs];
-                e->Graphics->DrawImage(imgs[symbol], *rect, 0, 0, imgs[symbol]->Width, imgs[symbol]->Height,
-                    GraphicsUnit::Pixel, ia);
-                delete imgs;
-
-                delete rect;
-                delete ia;
-                delete cmx;
 
                 y++;
             }

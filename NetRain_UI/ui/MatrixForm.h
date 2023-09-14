@@ -95,7 +95,7 @@ namespace NetRain
         }
 
         System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e) {
-            codeRainBox->Refresh();
+            codeRainBox->Invalidate();
         }
     }; // end of class MatrixForm
 } // end of namespace NetRain

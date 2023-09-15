@@ -26,13 +26,13 @@ namespace N_CodeRain
         Managed::droplet_glow = gcnew List<Color>();
         Managed::droplet_first = gcnew List<Color>();
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 100, 43));
+        Managed::droplet_default_outline->Add(Color::FromArgb(15, 27, 100, 43));
         Managed::droplet_default_inner->Add(Color::FromArgb(78, 214, 108));
         Managed::droplet_inner->Add(Color::FromArgb(37, 204, 79));
         Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
         Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(100, 27, 100, 43));
+        Managed::droplet_default_outline->Add(Color::FromArgb(15, 27, 100, 43));
         Managed::droplet_default_inner->Add(Color::FromArgb(138, 214, 108));
         Managed::droplet_inner->Add(Color::FromArgb(87, 204, 79));
         Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
@@ -128,7 +128,6 @@ namespace N_CodeRain
         Bitmap^ bmp = gcnew Bitmap(image->width * scale, image->height * scale);
         GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
         Region^ reg = gcnew Region();
-        Pen^ pen = gcnew Pen(Managed::droplet_default_outline[offs], 3);
         Graphics^ graphics = Graphics::FromImage(bmp);
         Matrix^ mx = gcnew Matrix(1.0f / 1.2f, 0, 0, 1.0f / 1.2f, -(1.0f / 1.2f), -(1.0f / 1.2f));
         
@@ -142,7 +141,15 @@ namespace N_CodeRain
                 }
                 graphics->SmoothingMode = SmoothingMode::AntiAlias;
                 graphics->Transform = mx;
-                graphics->DrawPath(pen, gpath);  // Draw outline
+
+                int steps = 10;
+                for (int i = 0; i < steps; i++)
+                {
+                    Pen^ pen = gcnew Pen(Managed::droplet_default_outline[offs], i);
+                    pen->Alignment = PenAlignment::Outset;
+                    graphics->DrawPath(pen, gpath);  // Draw outline
+                    delete pen;
+                }
         
                 path = path->next;
                 if (path != NULL)
@@ -162,7 +169,6 @@ namespace N_CodeRain
         }
         
         delete mx;
-        delete pen;
         delete reg;
         delete gpath;
         delete graphics;

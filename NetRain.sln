@@ -4,10 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain", "NetRain_UI\NetRain.vcxproj", "{644D16DD-816E-4BFD-ABF3-2C8AE222E015}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C} = {1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}
+		{3ACDE889-835F-4052-92BB-3D71AB0C5D8E} = {3ACDE889-835F-4052-92BB-3D71AB0C5D8E}
+		{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1} = {A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_Resources", "NetRain_Resources\NetRain_Resources.vcxproj", "{3ACDE889-835F-4052-92BB-3D71AB0C5D8E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_CodeWeather", "NetRain_CodeWeather\NetRain_CodeWeather.vcxproj", "{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_Networking", "NetRain_Networking\NetRain_Networking.vcxproj", "{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +48,14 @@ Global
 		{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}.Release|x64.Build.0 = Release|x64
 		{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}.Release|x86.ActiveCfg = Release|Win32
 		{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}.Release|x86.Build.0 = Release|Win32
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Debug|x64.ActiveCfg = Debug|x64
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Debug|x64.Build.0 = Debug|x64
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Debug|x86.ActiveCfg = Debug|Win32
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Debug|x86.Build.0 = Debug|Win32
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x64.ActiveCfg = Release|x64
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x64.Build.0 = Release|x64
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x86.ActiveCfg = Release|Win32
+		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

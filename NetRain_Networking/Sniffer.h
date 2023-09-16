@@ -11,6 +11,9 @@ namespace N_CodeRain_Net
     {
     public:
         static Sniffer* getInstance();
+
+        int getTcpCount();
+        int getUdpCount();
     private:
         Sniffer();
         static Sniffer* instancePtr;
@@ -27,7 +30,7 @@ namespace N_CodeRain_Net
         UDP_HDR* udpheader;
         ICMP_HDR* icmpheader;
 
-        int tcp, udp, icmp, others, igmp, total;
+        volatile int tcp, udp, icmp, others, igmp, total;
         bool run_thread;
         bool debug;
 

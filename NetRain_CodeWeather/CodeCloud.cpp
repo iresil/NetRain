@@ -9,39 +9,72 @@ namespace N_CodeRain
         Raindrop** raindrops = new Raindrop* [raindrop_count + 1];
         for (int i = 0; i < raindrop_count; i++)
         {
-            int tail_length_rand = 10 + rand() % (30 - 10);
-            int fall_seconds_mult_rand = 1 + rand() % (4 - 1);
-            int drop_count = 6;
-            int** symbols_rand = new int*[tail_length_rand + 1];
-            int* change_seconds_mult = new int[tail_length_rand + 1];
-            float* opacity = new float[tail_length_rand + 1];
-            for (int j = 0; j < tail_length_rand; j++)
-            {
-                int* symbols_tmp = new int[drop_count + 1];
-                for (int k = 0; k < drop_count; k++)
-                {
-                    symbols_tmp[k] = 1 + rand() % (55 - 1);
-                }
-                symbols_tmp[drop_count] = NULL;
-                symbols_rand[j] = *&symbols_tmp;
-
-                change_seconds_mult[j] = j + 1;
-
-                opacity[j] = (drop_count / 100.0) * (tail_length_rand - j);
-            }
-            symbols_rand[tail_length_rand] = NULL;
-            change_seconds_mult[tail_length_rand] = NULL;
-            opacity[tail_length_rand] = NULL;
-            *(raindrops + i) = new Raindrop(tail_length_rand, fall_seconds_mult_rand,
-                symbols_rand, change_seconds_mult, opacity);
+            *(raindrops + i) = generate_raindrop_rand();
         }
         raindrops[raindrop_count] = NULL;
         this->raindrops = raindrops;
     }
 
+    Raindrop* CodeCloud::generate_raindrop_rand()
+    {
+        int tail_length_rand = 10 + rand() % (30 - 10);
+        int fall_seconds_mult_rand = 1 + rand() % (4 - 1);
+        int drop_count = 6;
+        int** symbols_rand = new int* [tail_length_rand + 1];
+        int* change_seconds_mult = new int[tail_length_rand + 1];
+        float* opacity = new float[tail_length_rand + 1];
+        for (int j = 0; j < tail_length_rand; j++)
+        {
+            int* symbols_tmp = new int[drop_count + 1];
+            for (int k = 0; k < drop_count; k++)
+            {
+                symbols_tmp[k] = 1 + rand() % (55 - 1);
+            }
+            symbols_tmp[drop_count] = NULL;
+            symbols_rand[j] = *&symbols_tmp;
+
+            change_seconds_mult[j] = j + 1;
+
+            opacity[j] = (drop_count / 100.0) * (tail_length_rand - j);
+        }
+        symbols_rand[tail_length_rand] = NULL;
+        change_seconds_mult[tail_length_rand] = NULL;
+        opacity[tail_length_rand] = NULL;
+
+        return new Raindrop(tail_length_rand, fall_seconds_mult_rand,
+            symbols_rand, change_seconds_mult, opacity);
+    }
+
     Raindrop** CodeCloud::inspect_raindrops()
     {
         return this->raindrops;
+    }
+
+    void CodeCloud::reset_raindrop(int raindrop, int tail_length, int rows)
+    {
+        int drop_count = 6;
+        int** symbols_rand = new int* [tail_length + 1];
+        int* change_seconds_mult = new int[tail_length + 1];
+        float* opacity = new float[tail_length + 1];
+        for (int j = 0; j < tail_length; j++)
+        {
+            int* symbols_tmp = new int[drop_count + 1];
+            for (int k = 0; k < drop_count; k++)
+            {
+                symbols_tmp[k] = 1 + rand() % (55 - 1);
+            }
+            symbols_tmp[drop_count] = NULL;
+            symbols_rand[j] = *&symbols_tmp;
+
+            change_seconds_mult[j] = j + 1;
+
+            opacity[j] = (drop_count / 100.0) * (tail_length - j);
+        }
+        symbols_rand[tail_length] = NULL;
+        change_seconds_mult[tail_length] = NULL;
+        opacity[tail_length] = NULL;
+
+        this->raindrops[raindrop]->reset_raindrop(tail_length, change_seconds_mult, opacity, symbols_rand, rows);
     }
 
     void CodeCloud::MakeItRain()

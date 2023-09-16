@@ -7,10 +7,15 @@ namespace N_CodeRain
     {
     public:
         CodeCloud(int raindrops);
+
         Raindrop** inspect_raindrops();
+        void reset_raindrop(int raindrop, int tail_length, int rows);
+
         void MakeItRain();
     private:
         int raindrop_count;
         Raindrop** raindrops;
+
+        Raindrop* generate_raindrop_rand();
     };
 }

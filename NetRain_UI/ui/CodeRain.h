@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../NetToRaindropParams.h"
 #include "../../NetRain_Resources/ResourceHandler.h"
 #include "../../NetRain_CodeWeather/CodeCloud.h"
 
@@ -37,6 +38,7 @@ namespace N_CodeRain
         N_CodeRain_Res::ResourceHandler * resourceHandler;
         char** vectors;
 
+        NetToRaindropParams* netToRaindrop;
         CodeCloud* codeCloud[2];
         int raindrops;
 

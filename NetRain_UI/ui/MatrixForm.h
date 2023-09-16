@@ -12,7 +12,7 @@ namespace NetRain
     using namespace System::Drawing;
 
     /// <summary>
-    /// Summary for MatrixForm
+    /// This is the main form, on which the code rain effect will be displayed.
     /// </summary>
     public ref class MatrixForm : public System::Windows::Forms::Form
     {
@@ -36,12 +36,11 @@ namespace NetRain
     private:
         System::Windows::Forms::PictureBox^ codeRainBox;
         System::Windows::Forms::Timer^ timerRefresh;
-        System::ComponentModel::IContainer^ components;
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
-
+        System::ComponentModel::IContainer^ components;
 
 #pragma region Windows Form Designer generated code
         /// <summary>
@@ -90,11 +89,13 @@ namespace NetRain
         }
 #pragma endregion
 
-        System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+        System::Void codeRainBox_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+        {
             N_CodeRain::CodeRain::getInstance()->paint(codeRainBox, e);
         }
 
-        System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e) {
+        System::Void timerRefresh_Tick(System::Object^ sender, System::EventArgs^ e)
+        {
             codeRainBox->Invalidate();
         }
     }; // end of class MatrixForm

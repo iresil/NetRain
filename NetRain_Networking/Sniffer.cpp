@@ -60,6 +60,20 @@ namespace N_CodeRain_Net
         _endthread();
     }
 
+    int Sniffer::getTcpCount()
+    {
+        int result = this->tcp;
+        this->tcp = 0;
+        return result;
+    }
+
+    int Sniffer::getUdpCount()
+    {
+        int result = this->udp;
+        this->udp = 0;
+        return result;
+    }
+
     int Sniffer::Sniff()
     {
         SOCKET sniffer;

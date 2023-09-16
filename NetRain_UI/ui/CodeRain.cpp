@@ -57,6 +57,9 @@ namespace N_CodeRain
         }
 
         this->raindrops = raindrops;
+
+        this->netToRaindrop = new NetToRaindropParams();
+
         this->codeCloud[0] = new CodeCloud(raindrops);
         this->codeCloud[1] = new CodeCloud(raindrops);
     }
@@ -87,6 +90,7 @@ namespace N_CodeRain
             delete Managed::droplet_first[i];
         }
         delete this->codeCloud;
+        delete this->netToRaindrop;
 
         delete Managed::droplet_inner;
         delete Managed::droplet_glow;
@@ -112,6 +116,8 @@ namespace N_CodeRain
         e->Graphics->InterpolationMode = InterpolationMode::NearestNeighbor;
         e->Graphics->CompositingQuality = CompositingQuality::HighSpeed;
         
+        this->netToRaindrop->RefreshPacketCount();
+
         CodeRain::paintFromCloud(0, codeRainBox, e);
         CodeRain::paintFromCloud(1, codeRainBox, e);
     }
@@ -249,7 +255,9 @@ namespace N_CodeRain
 
                 if (i == tail_length - 1 && y + droplet_offset > rowNumber)
                 {
-                    raindrops[x]->reset_droplet(rowNumber);
+                    this->netToRaindrop->CalculateRaindropParams();
+                    int length = this->netToRaindrop->getTailLength(offs);
+                    this->codeCloud[offs]->reset_raindrop(x, length, rowNumber);
                 }
 
                 y++;

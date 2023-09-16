@@ -10,6 +10,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 // add headers that you want to pre-compile here
 #include <WinSock2.h>
+#include <process.h>
 #include <iostream>
 #include "framework.h"
 

@@ -25,10 +25,15 @@ namespace N_CodeRain_Net
         this->others = 0;
         this->igmp = 0;
         this->total = 0;
+
+        this->run_thread = true;
+        _beginthread(Sniff, 0, NULL);
     }
 
     Sniffer::~Sniffer()
     {
+        this->run_thread = false;
+
         delete this->iphdr;
         delete this->tcpheader;
         delete this->udpheader;
@@ -45,6 +50,12 @@ namespace N_CodeRain_Net
         {
             return instancePtr;
         }
+    }
+
+    void Sniffer::Sniff(void* ignored)
+    {
+        getInstance()->Sniff();
+        _endthread();
     }
 
     int Sniffer::Sniff()
@@ -171,7 +182,7 @@ namespace N_CodeRain_Net
             {
                 OutputDebugStringW(L"recvfrom() failed.\n");
             }
-        } while (mangobyte > 0);
+        } while (mangobyte > 0 && run_thread);
 
         free(Buffer);
     }

@@ -11,7 +11,6 @@ namespace N_CodeRain_Net
     {
     public:
         static Sniffer* getInstance();
-        int Sniff();
     private:
         Sniffer();
         static Sniffer* instancePtr;
@@ -29,6 +28,10 @@ namespace N_CodeRain_Net
         ICMP_HDR* icmpheader;
 
         int tcp, udp, icmp, others, igmp, total;
+        bool run_thread;
+
+        static void Sniff(void* ignored);
+        int Sniff();
 
         void StartSniffing(SOCKET sniffer);
         void ProcessPacket(char* Buffer, int Size);

@@ -26,6 +26,8 @@ namespace N_CodeRain_Net
         this->igmp = 0;
         this->total = 0;
 
+        this->debug = false;
+
         this->run_thread = true;
         _beginthread(Sniff, 0, NULL);
     }
@@ -217,6 +219,7 @@ namespace N_CodeRain_Net
             ++others;
             break;
         }
+
         OutputDebugStringW((std::wstring(L"TCP: ") + std::to_wstring(tcp) + std::wstring(L" UDP: ") + std::to_wstring(udp)
             + std::wstring(L" ICMP: ") + std::to_wstring(icmp) + std::wstring(L" IGMP: ") + std::to_wstring(igmp)
             + std::wstring(L" Others: ") + std::to_wstring(others) + std::wstring(L" Total: ") + std::to_wstring(total) + std::wstring(L"\r")).c_str());
@@ -235,27 +238,29 @@ namespace N_CodeRain_Net
         memset(&dest, 0, sizeof(dest));
         dest.sin_addr.s_addr = iphdr->ip_destaddr;
 
+        if (debug)
+        {
+            wchar_t* wString = new wchar_t[4096];
 
-        wchar_t* wString = new wchar_t[4096];
-
-        OutputDebugStringW(L"\n");
-        OutputDebugStringW(L"IP Header\n");
-        OutputDebugStringW((std::wstring(L" |-IP Version: ") + std::to_wstring((unsigned int)iphdr->ip_version) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-IP Header Length: ") + std::to_wstring((unsigned int)iphdr->ip_header_len) + std::wstring(L" DWORDS or ")
-            + std::to_wstring(((unsigned int)(iphdr->ip_header_len)) * 4) + std::wstring(L" Bytes\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Type Of Service: ") + std::to_wstring((unsigned int)iphdr->ip_tos) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-IP Total Length: ") + std::to_wstring(ntohs(iphdr->ip_total_length)) + std::wstring(L" Bytes(Size of Packet)\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Identification: ") + std::to_wstring(ntohs(iphdr->ip_id)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Reserved ZERO Field: ") + std::to_wstring((unsigned int)iphdr->ip_reserved_zero) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Dont Fragment Field: ") + std::to_wstring((unsigned int)iphdr->ip_dont_fragment) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-More Fragment Field: ") + std::to_wstring((unsigned int)iphdr->ip_more_fragment) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-TTL: ") + std::to_wstring((unsigned int)iphdr->ip_ttl) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Protocol: ") + std::to_wstring((unsigned int)iphdr->ip_protocol) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(iphdr->ip_checksum)) + std::wstring(L"\n")).c_str());
-        MultiByteToWideChar(CP_ACP, 0, inet_ntoa(source.sin_addr), -1, wString, 4096);
-        OutputDebugStringW((std::wstring(L" |-Source IP: ") + wString + std::wstring(L"\n")).c_str());
-        MultiByteToWideChar(CP_ACP, 0, inet_ntoa(dest.sin_addr), -1, wString, 4096);
-        OutputDebugStringW((std::wstring(L" |-Destination IP: ") + wString + std::wstring(L"\n")).c_str());
+            OutputDebugStringW(L"\n");
+            OutputDebugStringW(L"IP Header\n");
+            OutputDebugStringW((std::wstring(L" |-IP Version: ") + std::to_wstring((unsigned int)iphdr->ip_version) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-IP Header Length: ") + std::to_wstring((unsigned int)iphdr->ip_header_len) + std::wstring(L" DWORDS or ")
+                + std::to_wstring(((unsigned int)(iphdr->ip_header_len)) * 4) + std::wstring(L" Bytes\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Type Of Service: ") + std::to_wstring((unsigned int)iphdr->ip_tos) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-IP Total Length: ") + std::to_wstring(ntohs(iphdr->ip_total_length)) + std::wstring(L" Bytes(Size of Packet)\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Identification: ") + std::to_wstring(ntohs(iphdr->ip_id)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Reserved ZERO Field: ") + std::to_wstring((unsigned int)iphdr->ip_reserved_zero) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Dont Fragment Field: ") + std::to_wstring((unsigned int)iphdr->ip_dont_fragment) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-More Fragment Field: ") + std::to_wstring((unsigned int)iphdr->ip_more_fragment) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-TTL: ") + std::to_wstring((unsigned int)iphdr->ip_ttl) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Protocol: ") + std::to_wstring((unsigned int)iphdr->ip_protocol) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(iphdr->ip_checksum)) + std::wstring(L"\n")).c_str());
+            MultiByteToWideChar(CP_ACP, 0, inet_ntoa(source.sin_addr), -1, wString, 4096);
+            OutputDebugStringW((std::wstring(L" |-Source IP: ") + wString + std::wstring(L"\n")).c_str());
+            MultiByteToWideChar(CP_ACP, 0, inet_ntoa(dest.sin_addr), -1, wString, 4096);
+            OutputDebugStringW((std::wstring(L" |-Destination IP: ") + wString + std::wstring(L"\n")).c_str());
+        }
     }
 
     void Sniffer::PrintTcpPacket(char* Buffer, int Size)
@@ -267,44 +272,47 @@ namespace N_CodeRain_Net
 
         tcpheader = (TCP_HDR*)(Buffer + iphdrlen);
 
-        OutputDebugStringW(L"\n\n***********************TCP Packet*************************\n");
+        if (debug)
+        {
+            OutputDebugStringW(L"\n\n***********************TCP Packet*************************\n");
 
-        PrintIpHeader(Buffer);
+            PrintIpHeader(Buffer);
 
-        OutputDebugStringW(L"\n");
-        OutputDebugStringW(L"TCP Header\n");
-        OutputDebugStringW((std::wstring(L" |-Source Port: ") + std::to_wstring(ntohs(tcpheader->source_port)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Destination Port: ") + std::to_wstring(ntohs(tcpheader->dest_port)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Sequence Number: ") + std::to_wstring(ntohl(tcpheader->sequence)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Acknowledge Number: ") + std::to_wstring(ntohl(tcpheader->acknowledge)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Header Length: ") + std::to_wstring((unsigned int)tcpheader->data_offset) + std::wstring(L" DWORDS or ")
-            + std::to_wstring((unsigned int)tcpheader->data_offset * 4) + std::wstring(L" BYTES\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-CWR Flag: ") + std::to_wstring((unsigned int)tcpheader->cwr) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-ECN Flag: ") + std::to_wstring((unsigned int)tcpheader->ecn) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Urgent Flag: ") + std::to_wstring((unsigned int)tcpheader->urg) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Acknowledgement Flag: ") + std::to_wstring((unsigned int)tcpheader->ack) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Push Flag: ") + std::to_wstring((unsigned int)tcpheader->psh) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Reset Flag: ") + std::to_wstring((unsigned int)tcpheader->rst) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Synchronise Flag: ") + std::to_wstring((unsigned int)tcpheader->syn) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Finish Flag: ") + std::to_wstring((unsigned int)tcpheader->fin) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Window: ") + std::to_wstring(ntohs(tcpheader->window)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(tcpheader->checksum)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Urgent Pointer: ") + std::to_wstring(tcpheader->urgent_pointer) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW(L"\n");
-        OutputDebugStringW(L" DATA Dump ");
-        OutputDebugStringW(L"\n");
+            OutputDebugStringW(L"\n");
+            OutputDebugStringW(L"TCP Header\n");
+            OutputDebugStringW((std::wstring(L" |-Source Port: ") + std::to_wstring(ntohs(tcpheader->source_port)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Destination Port: ") + std::to_wstring(ntohs(tcpheader->dest_port)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Sequence Number: ") + std::to_wstring(ntohl(tcpheader->sequence)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Acknowledge Number: ") + std::to_wstring(ntohl(tcpheader->acknowledge)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Header Length: ") + std::to_wstring((unsigned int)tcpheader->data_offset) + std::wstring(L" DWORDS or ")
+                + std::to_wstring((unsigned int)tcpheader->data_offset * 4) + std::wstring(L" BYTES\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-CWR Flag: ") + std::to_wstring((unsigned int)tcpheader->cwr) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-ECN Flag: ") + std::to_wstring((unsigned int)tcpheader->ecn) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Urgent Flag: ") + std::to_wstring((unsigned int)tcpheader->urg) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Acknowledgement Flag: ") + std::to_wstring((unsigned int)tcpheader->ack) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Push Flag: ") + std::to_wstring((unsigned int)tcpheader->psh) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Reset Flag: ") + std::to_wstring((unsigned int)tcpheader->rst) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Synchronise Flag: ") + std::to_wstring((unsigned int)tcpheader->syn) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Finish Flag: ") + std::to_wstring((unsigned int)tcpheader->fin) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Window: ") + std::to_wstring(ntohs(tcpheader->window)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(tcpheader->checksum)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Urgent Pointer: ") + std::to_wstring(tcpheader->urgent_pointer) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW(L"\n");
+            OutputDebugStringW(L" DATA Dump ");
+            OutputDebugStringW(L"\n");
 
-        OutputDebugStringW(L"IP Header\n");
-        PrintData(Buffer, iphdrlen);
+            OutputDebugStringW(L"IP Header\n");
+            PrintData(Buffer, iphdrlen);
 
-        OutputDebugStringW(L"TCP Header\n");
-        PrintData(Buffer + iphdrlen, tcpheader->data_offset * 4);
+            OutputDebugStringW(L"TCP Header\n");
+            PrintData(Buffer + iphdrlen, tcpheader->data_offset * 4);
 
-        OutputDebugStringW(L"Data Payload\n");
-        PrintData(Buffer + iphdrlen + tcpheader->data_offset * 4
-            , (Size - tcpheader->data_offset * 4 - iphdr->ip_header_len * 4));
+            OutputDebugStringW(L"Data Payload\n");
+            PrintData(Buffer + iphdrlen + tcpheader->data_offset * 4
+                , (Size - tcpheader->data_offset * 4 - iphdr->ip_header_len * 4));
 
-        OutputDebugStringW(L"\n###########################################################");
+            OutputDebugStringW(L"\n###########################################################");
+        }
     }
 
     void Sniffer::PrintUdpPacket(char* Buffer, int Size)
@@ -316,30 +324,33 @@ namespace N_CodeRain_Net
 
         udpheader = (UDP_HDR*)(Buffer + iphdrlen);
 
-        OutputDebugStringW(L"\n\n***********************UDP Packet*************************\n");
+        if (debug)
+        {
+            OutputDebugStringW(L"\n\n***********************UDP Packet*************************\n");
 
-        PrintIpHeader(Buffer);
+            PrintIpHeader(Buffer);
 
-        OutputDebugStringW(L"\nUDP Header\n");
-        OutputDebugStringW((std::wstring(L" |-Source Port: ") + std::to_wstring(ntohs(udpheader->source_port)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Destination Port: ") + std::to_wstring(ntohs(udpheader->dest_port)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-UDP Length: ") + std::to_wstring(ntohs(udpheader->udp_length)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-UDP Checksum: ") + std::to_wstring(ntohs(udpheader->udp_checksum)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW(L"\nUDP Header\n");
+            OutputDebugStringW((std::wstring(L" |-Source Port: ") + std::to_wstring(ntohs(udpheader->source_port)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Destination Port: ") + std::to_wstring(ntohs(udpheader->dest_port)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-UDP Length: ") + std::to_wstring(ntohs(udpheader->udp_length)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-UDP Checksum: ") + std::to_wstring(ntohs(udpheader->udp_checksum)) + std::wstring(L"\n")).c_str());
         
-        OutputDebugStringW(L"\n");
-        OutputDebugStringW(L"IP Header\n");
+            OutputDebugStringW(L"\n");
+            OutputDebugStringW(L"IP Header\n");
 
-        PrintData(Buffer, iphdrlen);
+            PrintData(Buffer, iphdrlen);
 
-        OutputDebugStringW(L"UDP Header\n");
+            OutputDebugStringW(L"UDP Header\n");
 
-        PrintData(Buffer + iphdrlen, sizeof(UDP_HDR));
+            PrintData(Buffer + iphdrlen, sizeof(UDP_HDR));
 
-        OutputDebugStringW(L"Data Payload\n");
+            OutputDebugStringW(L"Data Payload\n");
 
-        PrintData(Buffer + iphdrlen + sizeof(UDP_HDR), (Size - sizeof(UDP_HDR) - iphdr->ip_header_len * 4));
+            PrintData(Buffer + iphdrlen + sizeof(UDP_HDR), (Size - sizeof(UDP_HDR) - iphdr->ip_header_len * 4));
 
-        OutputDebugStringW(L"\n###########################################################");
+            OutputDebugStringW(L"\n###########################################################");
+        }
     }
 
     void Sniffer::PrintIcmpPacket(char* Buffer, int Size)
@@ -351,80 +362,86 @@ namespace N_CodeRain_Net
 
         icmpheader = (ICMP_HDR*)(Buffer + iphdrlen);
 
-        OutputDebugStringW(L"\n\n***********************ICMP Packet*************************\n");
-        PrintIpHeader(Buffer);
-
-        OutputDebugStringW(L"\n");
-
-        OutputDebugStringW(L"ICMP Header\n");
-        OutputDebugStringW((std::wstring(L" |-Type: ") + std::to_wstring((unsigned int)(icmpheader->type)) + std::wstring(L"\n")).c_str());
-
-        if ((unsigned int)(icmpheader->type) == 11)
+        if (debug)
         {
-            OutputDebugStringW(L" (TTL Expired)\n");
+            OutputDebugStringW(L"\n\n***********************ICMP Packet*************************\n");
+            PrintIpHeader(Buffer);
+
+            OutputDebugStringW(L"\n");
+
+            OutputDebugStringW(L"ICMP Header\n");
+            OutputDebugStringW((std::wstring(L" |-Type: ") + std::to_wstring((unsigned int)(icmpheader->type)) + std::wstring(L"\n")).c_str());
+
+            if ((unsigned int)(icmpheader->type) == 11)
+            {
+                OutputDebugStringW(L" (TTL Expired)\n");
+            }
+            else if ((unsigned int)(icmpheader->type) == 0)
+            {
+                OutputDebugStringW(L" (ICMP Echo Reply)\n");
+            }
+
+            OutputDebugStringW((std::wstring(L" |-Code: ") + std::to_wstring((unsigned int)(icmpheader->code)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(icmpheader->checksum)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-ID: ") + std::to_wstring(ntohs(icmpheader->id)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW((std::wstring(L" |-Sequence: ") + std::to_wstring(ntohs(icmpheader->seq)) + std::wstring(L"\n")).c_str());
+            OutputDebugStringW(L"\n");
+
+            OutputDebugStringW(L"IP Header\n");
+            PrintData(Buffer, iphdrlen);
+
+            OutputDebugStringW(L"UDP Header\n");
+            PrintData(Buffer + iphdrlen, sizeof(ICMP_HDR));
+
+            OutputDebugStringW(L"Data Payload\n");
+            PrintData(Buffer + iphdrlen + sizeof(ICMP_HDR), (Size - sizeof(ICMP_HDR) - iphdr->ip_header_len * 4));
+
+            OutputDebugStringW(L"\n###########################################################");
         }
-        else if ((unsigned int)(icmpheader->type) == 0)
-        {
-            OutputDebugStringW(L" (ICMP Echo Reply)\n");
-        }
-
-        OutputDebugStringW((std::wstring(L" |-Code: ") + std::to_wstring((unsigned int)(icmpheader->code)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Checksum: ") + std::to_wstring(ntohs(icmpheader->checksum)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-ID: ") + std::to_wstring(ntohs(icmpheader->id)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW((std::wstring(L" |-Sequence: ") + std::to_wstring(ntohs(icmpheader->seq)) + std::wstring(L"\n")).c_str());
-        OutputDebugStringW(L"\n");
-
-        OutputDebugStringW(L"IP Header\n");
-        PrintData(Buffer, iphdrlen);
-
-        OutputDebugStringW(L"UDP Header\n");
-        PrintData(Buffer + iphdrlen, sizeof(ICMP_HDR));
-
-        OutputDebugStringW(L"Data Payload\n");
-        PrintData(Buffer + iphdrlen + sizeof(ICMP_HDR), (Size - sizeof(ICMP_HDR) - iphdr->ip_header_len * 4));
-
-        OutputDebugStringW(L"\n###########################################################");
     }
 
     // Print the hex values of the data.
     void Sniffer::PrintData(char* data, int Size)
     {
-        char a, line[17], c;
-        int j;
-
-        for (int i = 0; i < Size; i++)
+        if (debug)
         {
-            c = data[i];
+            char a, line[17], c;
+            int j;
 
-            // Print the hex value for every character, with a space. Important to make unsigned
-            OutputDebugStringW((std::wstring(L" ") + std::to_wstring(0xFF & (unsigned char)c)).c_str());
-
-            // Add the character to data line. Important to make unsigned
-            a = (c >= 32 && c <= 128) ? (unsigned char)c : '.';
-
-            line[i % 16] = a;
-
-            // If last character of a line, then print the line - 16 characters in 1 line
-            if ((i != 0 && (i + 1) % 16 == 0) || i == Size - 1)
+            for (int i = 0; i < Size; i++)
             {
-                line[i % 16 + 1] = '\0';
+                c = data[i];
 
-                // Print a big gap of 10 characters between hex and characters
-                OutputDebugStringW(L"          ");
+                // Print the hex value for every character, with a space. Important to make unsigned
+                OutputDebugStringW((std::wstring(L" ") + std::to_wstring(0xFF & (unsigned char)c)).c_str());
 
-                // Print additional spaces for last lines which might be less than 16 characters in length
-                for (j = strlen(line); j < 16; j++)
+                // Add the character to data line. Important to make unsigned
+                a = (c >= 32 && c <= 128) ? (unsigned char)c : '.';
+
+                line[i % 16] = a;
+
+                // If last character of a line, then print the line - 16 characters in 1 line
+                if ((i != 0 && (i + 1) % 16 == 0) || i == Size - 1)
                 {
-                    OutputDebugStringW(L"   ");
+                    line[i % 16 + 1] = '\0';
+
+                    // Print a big gap of 10 characters between hex and characters
+                    OutputDebugStringW(L"          ");
+
+                    // Print additional spaces for last lines which might be less than 16 characters in length
+                    for (j = strlen(line); j < 16; j++)
+                    {
+                        OutputDebugStringW(L"   ");
+                    }
+
+                    wchar_t* wString = new wchar_t[4096];
+                    MultiByteToWideChar(CP_ACP, 0, line, -1, wString, 4096);
+                    OutputDebugStringW(wString);
+                    OutputDebugStringW(L"\n");
                 }
-
-                wchar_t* wString = new wchar_t[4096];
-                MultiByteToWideChar(CP_ACP, 0, line, -1, wString, 4096);
-                OutputDebugStringW(wString);
-                OutputDebugStringW(L"\n");
             }
-        }
 
-        OutputDebugStringW(L"\n");
+            OutputDebugStringW(L"\n");
+        }
     }
 }

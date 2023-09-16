@@ -29,6 +29,7 @@ namespace N_CodeRain_Net
 
         int tcp, udp, icmp, others, igmp, total;
         bool run_thread;
+        bool debug;
 
         static void Sniff(void* ignored);
         int Sniff();

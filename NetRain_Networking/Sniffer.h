@@ -10,17 +10,25 @@ namespace N_CodeRain_Net
     class Sniffer
     {
     public:
+        static Sniffer* getInstance();
         int Sniff();
     private:
+        Sniffer();
+        static Sniffer* instancePtr;
+
+        ~Sniffer();
+        Sniffer(const Sniffer&) = delete;
+        Sniffer(Sniffer& other) = delete;
+        Sniffer& operator=(const Sniffer&) = delete;
+
         struct sockaddr_in source, dest;
-        char hex[2];
 
         IPV4_HDR* iphdr;
         TCP_HDR* tcpheader;
         UDP_HDR* udpheader;
         ICMP_HDR* icmpheader;
 
-        int tcp = 0, udp = 0, icmp = 0, others = 0, igmp = 0, total = 0, i, j;
+        int tcp, udp, icmp, others, igmp, total;
 
         void StartSniffing(SOCKET sniffer);
         void ProcessPacket(char* Buffer, int Size);

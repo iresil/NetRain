@@ -7,6 +7,46 @@
 
 namespace N_CodeRain_Net
 {
+    Sniffer* Sniffer::instancePtr = NULL;
+
+    Sniffer::Sniffer()
+    {
+        this->source = *(new sockaddr_in());
+        this->dest = *(new sockaddr_in());
+
+        this->iphdr = NULL;
+        this->tcpheader = NULL;
+        this->udpheader = NULL;
+        this->icmpheader = NULL;
+
+        this->tcp = 0;
+        this->udp = 0;
+        this->icmp = 0;
+        this->others = 0;
+        this->igmp = 0;
+        this->total = 0;
+    }
+
+    Sniffer::~Sniffer()
+    {
+        delete this->iphdr;
+        delete this->tcpheader;
+        delete this->udpheader;
+        delete this->icmpheader;
+    }
+
+    Sniffer* Sniffer::getInstance() {
+        if (instancePtr == NULL)
+        {
+            instancePtr = new Sniffer();
+            return instancePtr;
+        }
+        else
+        {
+            return instancePtr;
+        }
+    }
+
     int Sniffer::Sniff()
     {
         SOCKET sniffer;
@@ -23,6 +63,7 @@ namespace N_CodeRain_Net
         if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
         {
             OutputDebugStringW(L"WSAStartup() failed.\n");
+            WSACleanup();
             return 1;
         }
         OutputDebugStringW(L"Initialised");
@@ -33,6 +74,7 @@ namespace N_CodeRain_Net
         if (sniffer == INVALID_SOCKET)
         {
             OutputDebugStringW(L"Failed to create raw socket.\n");
+            WSACleanup();
             return 1;
         }
         OutputDebugStringW(L"Created.");
@@ -41,6 +83,7 @@ namespace N_CodeRain_Net
         if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR)
         {
             OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
+            WSACleanup();
             return 1;
         }
 
@@ -53,10 +96,11 @@ namespace N_CodeRain_Net
         if (local == NULL)
         {
             OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
+            WSACleanup();
             return 1;
         }
 
-        for (i = 0; local->h_addr_list[i] != 0; ++i)
+        for (int i = 0; local->h_addr_list[i] != 0; ++i)
         {
             memcpy(&addr, local->h_addr_list[i], sizeof(struct in_addr));
             MultiByteToWideChar(CP_ACP, 0, inet_ntoa(addr), -1, wString, 4096);
@@ -76,16 +120,18 @@ namespace N_CodeRain_Net
             {
                 MultiByteToWideChar(CP_ACP, 0, inet_ntoa(addr), -1, wString, 4096);
                 OutputDebugStringW((std::wstring(L"bind(") + wString + std::wstring(L") failed.\n")).c_str());
+                WSACleanup();
                 return 1;
             }
             OutputDebugStringW(L"Binding successful");
 
             // Enable this socket with the power to sniff: SIO_RCVALL is the key Receive ALL
-            j = 1;
+            int j = 1;
             OutputDebugStringW(L"\nSetting socket to sniff...");
             if (WSAIoctl(sniffer, SIO_RCVALL, &j, sizeof(j), 0, 0, (LPDWORD)&in, 0, 0) == SOCKET_ERROR)
             {
                 OutputDebugStringW(L"WSAIoctl() failed.\n");
+                WSACleanup();
                 return 1;
             }
             OutputDebugStringW(L"Socket set.");
@@ -335,7 +381,7 @@ namespace N_CodeRain_Net
         char a, line[17], c;
         int j;
 
-        for (i = 0; i < Size; i++)
+        for (int i = 0; i < Size; i++)
         {
             c = data[i];
 

@@ -102,6 +102,10 @@ namespace N_CodeRain
         generate_raindrop_params(tail_length, fall_seconds_mult, symbols, change_seconds_mult, opacity);
 
         this->raindrops[raindrop]->reset_raindrop(tail_length, fall_seconds_mult, change_seconds_mult, opacity, symbols, rows);
+
+        delete[] change_seconds_mult;
+        delete[] opacity;
+        delete[] symbols;
     }
 
     void CodeCloud::MakeItRain()

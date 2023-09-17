@@ -233,9 +233,12 @@ namespace N_CodeRain_Net
             break;
         }
 
-        OutputDebugStringW((std::wstring(L"TCP: ") + std::to_wstring(tcp) + std::wstring(L" UDP: ") + std::to_wstring(udp)
-            + std::wstring(L" ICMP: ") + std::to_wstring(icmp) + std::wstring(L" IGMP: ") + std::to_wstring(igmp)
-            + std::wstring(L" Others: ") + std::to_wstring(others) + std::wstring(L" Total: ") + std::to_wstring(total) + std::wstring(L"\r")).c_str());
+        if (debug)
+        {
+            OutputDebugStringW((std::wstring(L"TCP: ") + std::to_wstring(tcp) + std::wstring(L" UDP: ") + std::to_wstring(udp)
+                + std::wstring(L" ICMP: ") + std::to_wstring(icmp) + std::wstring(L" IGMP: ") + std::to_wstring(igmp)
+                + std::wstring(L" Others: ") + std::to_wstring(others) + std::wstring(L" Total: ") + std::to_wstring(total) + std::wstring(L"\r")).c_str());
+        }
     }
 
     void Sniffer::PrintIpHeader(char* Buffer)

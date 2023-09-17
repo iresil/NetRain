@@ -13,6 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Protocols">
+      <UniqueIdentifier>{df17fc26-73fd-4ef4-b3f3-5c2f989a6c9b}</UniqueIdentifier>
+      <Extensions>_HDR</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -25,16 +29,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="protocol_headers\ICMP_HDR.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Protocols</Filter>
     </ClInclude>
     <ClInclude Include="protocol_headers\IPV4_HDR.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Protocols</Filter>
     </ClInclude>
     <ClInclude Include="protocol_headers\TCP_HDR.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Protocols</Filter>
     </ClInclude>
     <ClInclude Include="protocol_headers\UDP_HDR.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Protocols</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

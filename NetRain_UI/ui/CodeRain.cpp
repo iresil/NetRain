@@ -257,7 +257,7 @@ namespace N_CodeRain
                 {
                     this->netToRaindrop->CalculateRaindropParams();
                     int length = this->netToRaindrop->getTailLength(offs);
-                    this->codeCloud[offs]->reset_raindrop(x, length, rowNumber);
+                    this->codeCloud[offs]->reset_raindrop(x, rowNumber, length);
                 }
 
                 y++;

@@ -49,7 +49,8 @@ namespace N_CodeRain
         }
     }
 
-    void Raindrop::reset_raindrop(int tail_length, int* change_seconds_multiplier, float* opacity, int** symbols, int rows)
+    void Raindrop::reset_raindrop(int tail_length, int fall_seconds_mult, int* change_seconds_multiplier,
+        float* opacity, int** symbols, int rows)
     {
         for (int i = 0; i < this->tail_length; i++)
         {
@@ -67,7 +68,7 @@ namespace N_CodeRain
         droplet_array[tail_length] = NULL;
         this->drops = droplet_array;
 
-        this->fall_seconds_multiplier = 1 + rand() % (4 - 1);
+        this->fall_seconds_multiplier = fall_seconds_mult;
         this->droplet_offset = (rand() % 30) - rows - this->tail_length;
     }
 }

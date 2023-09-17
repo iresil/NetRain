@@ -9,7 +9,7 @@ namespace N_CodeRain
         CodeCloud(int raindrops);
 
         Raindrop** inspect_raindrops();
-        void reset_raindrop(int raindrop, int tail_length, int rows);
+        void reset_raindrop(int raindrop, int rows, int tail_length = -1);
 
         void MakeItRain();
     private:
@@ -17,5 +17,8 @@ namespace N_CodeRain
         Raindrop** raindrops;
 
         Raindrop* generate_raindrop_rand();
+
+        void generate_raindrop_params(int& tail_length, int& fall_seconds_mult, int** &symbols,
+            int* &change_seconds_mult, float* &opacity);
     };
 }

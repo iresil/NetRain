@@ -6,6 +6,7 @@ namespace N_CodeRain
     {
     public:
         Droplet(int change_seconds_multiplier, float opacity, int symbols[]);
+        ~Droplet();
         int* get_symbols();
         int get_next_symbol(int fall_seconds_multiplier);
         float get_opacity();

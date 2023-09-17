@@ -12,6 +12,11 @@ namespace N_CodeRain
         this->change_seconds_multiplier = change_seconds_multiplier;
     }
 
+    Droplet::~Droplet()
+    {
+        delete[] this->symbols;
+    }
+
     float Droplet::get_opacity()
     {
         return this->opacity;

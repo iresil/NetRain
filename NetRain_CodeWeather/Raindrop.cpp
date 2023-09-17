@@ -55,11 +55,11 @@ namespace N_CodeRain
         {
             delete this->drops[i];
         }
-        delete this->drops;
-
+        delete[] this->drops;
+        
         this->tail_length = tail_length;
-
-        Droplet** droplet_array = new Droplet * [tail_length + 1];
+        
+        Droplet** droplet_array = new Droplet* [tail_length + 1];
         for (int i = 0; i < tail_length; i++)
         {
             *(droplet_array + i) = new Droplet(change_seconds_multiplier[i], opacity[i], symbols[i]);

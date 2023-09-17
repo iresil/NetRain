@@ -23,19 +23,17 @@ namespace N_CodeRain_Net
         Sniffer(Sniffer& other) = delete;
         Sniffer& operator=(const Sniffer&) = delete;
 
-        struct sockaddr_in source, dest;
+        struct hostent* local;
 
-        IPV4_HDR* iphdr;
-        TCP_HDR* tcpheader;
-        UDP_HDR* udpheader;
-        ICMP_HDR* icmpheader;
-
+        char hostname[100];
         volatile int tcp, udp, icmp, others, igmp, total;
+        int network_interface_count;
         bool run_thread;
         bool debug;
 
+        void SetupNetworkInterfaces();
         static void Sniff(void* ignored);
-        int Sniff();
+        int Sniff(int in);
 
         void StartSniffing(SOCKET sniffer);
         void ProcessPacket(char* Buffer, int Size);

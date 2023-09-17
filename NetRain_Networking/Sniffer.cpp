@@ -11,14 +11,6 @@ namespace N_CodeRain_Net
 
     Sniffer::Sniffer()
     {
-        this->source = *(new sockaddr_in());
-        this->dest = *(new sockaddr_in());
-
-        this->iphdr = NULL;
-        this->tcpheader = NULL;
-        this->udpheader = NULL;
-        this->icmpheader = NULL;
-
         this->tcp = 0;
         this->udp = 0;
         this->icmp = 0;
@@ -29,17 +21,20 @@ namespace N_CodeRain_Net
         this->debug = false;
 
         this->run_thread = true;
-        _beginthread(Sniff, 0, NULL);
+
+        SetupNetworkInterfaces();
+
+        for (int i = 0; i < this->network_interface_count; ++i)
+        {
+            _beginthread(Sniff, 0, (void*)i);
+        }
     }
 
     Sniffer::~Sniffer()
     {
         this->run_thread = false;
-
-        delete this->iphdr;
-        delete this->tcpheader;
-        delete this->udpheader;
-        delete this->icmpheader;
+        delete[] this->hostname;
+        delete this->local;
     }
 
     Sniffer* Sniffer::getInstance() {
@@ -56,7 +51,7 @@ namespace N_CodeRain_Net
 
     void Sniffer::Sniff(void* ignored)
     {
-        getInstance()->Sniff();
+        getInstance()->Sniff((int)ignored);
         _endthread();
     }
 
@@ -74,26 +69,52 @@ namespace N_CodeRain_Net
         return result;
     }
 
-    int Sniffer::Sniff()
+    void Sniffer::SetupNetworkInterfaces()
     {
-        SOCKET sniffer;
-        struct in_addr addr;
-        int in = 0;
-
-        char hostname[100];
-        struct hostent* local;
-        WSADATA wsa;
-        wchar_t* wString = new wchar_t[4096];
-
         // Initialize Winsock
+        WSADATA wsa;
         OutputDebugStringW(L"\nInitialising Winsock...");
         if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
         {
             OutputDebugStringW(L"WSAStartup() failed.\n");
             WSACleanup();
-            return 1;
+            return;
         }
         OutputDebugStringW(L"Initialised");
+
+        wchar_t* wString = new wchar_t[4096];
+        // Retrieve the local hostname
+        if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR)
+        {
+            OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
+            WSACleanup();
+            return;
+        }
+        MultiByteToWideChar(CP_ACP, 0, hostname, -1, wString, 4096);
+        OutputDebugStringW((std::wstring(L"\nHost name: ") + wString + std::wstring(L" \n")).c_str());
+
+        // Retrieve the available IPs of the local host
+        local = gethostbyname(hostname);
+        OutputDebugStringW(L"\nAvailable Network Interfaces: \n");
+        if (local == NULL)
+        {
+            OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
+            WSACleanup();
+            return;
+        }
+
+        for (int i = 0; local->h_addr_list[i] != 0; ++i)
+        {
+            network_interface_count++;
+        }
+    }
+
+    int Sniffer::Sniff(int in)
+    {
+        SOCKET sniffer;
+        struct in_addr addr;
+
+        wchar_t* wString = new wchar_t[4096];
 
         // Create a RAW Socket
         OutputDebugStringW(L"\nCreating RAW Socket...");
@@ -106,41 +127,19 @@ namespace N_CodeRain_Net
         }
         OutputDebugStringW(L"Created.");
 
-        // Retrieve the local hostname
-        if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR)
-        {
-            OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
-            WSACleanup();
-            return 1;
-        }
+        memcpy(&addr, local->h_addr_list[in], sizeof(struct in_addr));
+        MultiByteToWideChar(CP_ACP, 0, inet_ntoa(addr), -1, wString, 4096);
+        OutputDebugStringW((std::wstring(L"Interface Number: ") + std::to_wstring(in) + std::wstring(L" Address: ") + wString + std::wstring(L" Type: ") + std::to_wstring(local->h_addrtype)).c_str());
 
-        MultiByteToWideChar(CP_ACP, 0, hostname, -1, wString, 4096);
-        OutputDebugStringW((std::wstring(L"\nHost name: ") + wString + std::wstring(L" \n")).c_str());
-
-        // Retrieve the available IPs of the local host
-        local = gethostbyname(hostname);
-        OutputDebugStringW(L"\nAvailable Network Interfaces: \n");
-        if (local == NULL)
-        {
-            OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
-            WSACleanup();
-            return 1;
-        }
-
-        for (int i = 0; local->h_addr_list[i] != 0; ++i)
-        {
-            memcpy(&addr, local->h_addr_list[i], sizeof(struct in_addr));
-            MultiByteToWideChar(CP_ACP, 0, inet_ntoa(addr), -1, wString, 4096);
-            OutputDebugStringW((std::wstring(L"Interface Number: ") + std::to_wstring(i) + std::wstring(L" Address: ") + wString).c_str());
-        }
-
-        memset(&dest, 0, sizeof(dest));
         // Start sniffing from the first interface
+        struct sockaddr_in dest = *(new sockaddr_in());
+        memset(&dest, 0, sizeof(dest));
+
         if (local->h_addr_list[in] != nullptr)
         {
             memcpy(&dest.sin_addr.s_addr, local->h_addr_list[in], sizeof(dest.sin_addr.s_addr));
             dest.sin_family = AF_INET;
-            dest.sin_port = 0;
+            dest.sin_port = in;
 
             OutputDebugStringW(L"\nBinding socket to local system and port 0 ...");
             if (bind(sniffer, (struct sockaddr*)&dest, sizeof(dest)) == SOCKET_ERROR)
@@ -205,7 +204,7 @@ namespace N_CodeRain_Net
 
     void Sniffer::ProcessPacket(char* Buffer, int Size)
     {
-        iphdr = (IPV4_HDR*)Buffer;
+        IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         ++total;
 
         switch (iphdr->ip_protocol)
@@ -243,12 +242,14 @@ namespace N_CodeRain_Net
     {
         unsigned short iphdrlen;
 
-        iphdr = (IPV4_HDR*)Buffer;
+        IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         iphdrlen = iphdr->ip_header_len * 4;
 
+        struct sockaddr_in source = *(new sockaddr_in());
         memset(&source, 0, sizeof(source));
         source.sin_addr.s_addr = iphdr->ip_srcaddr;
 
+        struct sockaddr_in dest = *(new sockaddr_in());
         memset(&dest, 0, sizeof(dest));
         dest.sin_addr.s_addr = iphdr->ip_destaddr;
 
@@ -281,10 +282,10 @@ namespace N_CodeRain_Net
     {
         unsigned short iphdrlen;
 
-        iphdr = (IPV4_HDR*)Buffer;
+        IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         iphdrlen = iphdr->ip_header_len * 4;
 
-        tcpheader = (TCP_HDR*)(Buffer + iphdrlen);
+        TCP_HDR* tcpheader = (TCP_HDR*)(Buffer + iphdrlen);
 
         if (debug)
         {
@@ -333,10 +334,10 @@ namespace N_CodeRain_Net
     {
         unsigned short iphdrlen;
 
-        iphdr = (IPV4_HDR*)Buffer;
+        IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         iphdrlen = iphdr->ip_header_len * 4;
 
-        udpheader = (UDP_HDR*)(Buffer + iphdrlen);
+        UDP_HDR* udpheader = (UDP_HDR*)(Buffer + iphdrlen);
 
         if (debug)
         {
@@ -371,10 +372,10 @@ namespace N_CodeRain_Net
     {
         unsigned short iphdrlen;
 
-        iphdr = (IPV4_HDR*)Buffer;
+        IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         iphdrlen = iphdr->ip_header_len * 4;
 
-        icmpheader = (ICMP_HDR*)(Buffer + iphdrlen);
+        ICMP_HDR* icmpheader = (ICMP_HDR*)(Buffer + iphdrlen);
 
         if (debug)
         {

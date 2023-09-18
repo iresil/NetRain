@@ -46,7 +46,7 @@ namespace N_CodeRain_Res
 
             res_str_nterm = new char[str_len_nterm];
             strcpy_s(res_str_nterm, str_len_nterm, res_str);
-            res_str_nterm[str_len_nterm] = NULL;
+            res_str_nterm[str_len_nterm - 1] = NULL;
         }
         return res_str_nterm;
     }

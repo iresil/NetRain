@@ -127,10 +127,10 @@ namespace N_CodeRain
         float scale = 0.09f;
 
         size_t str_len = strlen(res_str);
-        char* res_str_copy = new char[str_len];
+        char* res_str_copy = new char[str_len + 1];
         strcpy(res_str_copy, res_str);
         struct NSVGimage* image = nsvgParse(res_str_copy, "px", 96);
-        
+
         Bitmap^ bmp = gcnew Bitmap(image->width * scale, image->height * scale);
         GraphicsPath^ gpath = gcnew GraphicsPath(FillMode::Winding);
         Region^ reg = gcnew Region();

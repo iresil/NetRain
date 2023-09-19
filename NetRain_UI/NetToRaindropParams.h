@@ -6,6 +6,7 @@ namespace N_CodeRain
     {
     public:
         NetToRaindropParams();
+        bool getSuccess();
 
         void RefreshPacketCount();
         void CalculateRaindropParams();

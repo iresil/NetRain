@@ -11,12 +11,14 @@ namespace N_CodeRain_Net
     {
     public:
         static Sniffer* getInstance();
+        bool getSuccess();
 
         int getTcpCount();
         int getUdpCount();
     private:
         Sniffer();
         static Sniffer* instancePtr;
+        volatile bool success;
 
         ~Sniffer();
         Sniffer(const Sniffer&) = delete;

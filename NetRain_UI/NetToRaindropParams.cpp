@@ -28,6 +28,11 @@ namespace N_CodeRain
         this->udp_opacity = nullptr;
     }
 
+    bool NetToRaindropParams::getSuccess()
+    {
+        return N_CodeRain_Net::Sniffer::getInstance()->getSuccess();
+    }
+
     void NetToRaindropParams::RefreshPacketCount()
     {
         this->times_called++;

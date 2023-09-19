@@ -16,12 +16,28 @@ namespace N_CodeRain
         ref class Managed
         {
         public:
+            static void ReleaseResources();
+            static void ReleaseBitmaps();
+
+            static List<Bitmap^>^ getImages(int offs, bool preparationSuccess);
+            static Color getDropletOutline(int offs, bool preparationSuccess);
+            static Color getDropletInner(int offs, bool preparationSuccess);
+            static Color getDropletFirst(int offs, bool preparationSuccess);
+
+            static void setImages(List<List<List<Bitmap^>^>^>^ images);
+            static void setDropletOutline(int offs, Color color, Color color_alt);
+            static void setDropletInner(int offs, Color color, Color color_alt);
+            static void setDropletFirst(int offs, Color color, Color color_alt);
+        private:
             static List<List<Bitmap^>^>^ images = nullptr;
-            static List<Color>^ droplet_default_outline = nullptr;
-            static List<Color>^ droplet_default_inner = nullptr;
+            static List<Color>^ droplet_outline = nullptr;
             static List<Color>^ droplet_inner = nullptr;
-            static List<Color>^ droplet_glow = nullptr;
             static List<Color>^ droplet_first = nullptr;
+
+            static List<List<Bitmap^>^>^ images_alt = nullptr;
+            static List<Color>^ droplet_outline_alt = nullptr;
+            static List<Color>^ droplet_inner_alt = nullptr;
+            static List<Color>^ droplet_first_alt = nullptr;
         };
 
         static CodeRain* getInstance();
@@ -29,6 +45,7 @@ namespace N_CodeRain
     private:
         CodeRain(int raindrops);
         static CodeRain* instancePtr;
+        bool preparationSuccess;
 
         ~CodeRain();
         CodeRain(const CodeRain&) = delete;
@@ -42,7 +59,8 @@ namespace N_CodeRain
         CodeCloud* codeCloud[2];
         int raindrops;
 
-        Bitmap^ resourceToBitmap(char* res_str, int offs);
+        Bitmap^ resourceToBitmap(char* res_str, int offs, bool preparationSuccess);
+        List<List<List<Bitmap^>^>^>^ makeImages(char** vectors);
         void paintFromCloud(int offs, PictureBox^ codeRainBox, PaintEventArgs^ e);
     };
 }

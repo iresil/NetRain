@@ -20,45 +20,20 @@ namespace N_CodeRain
         this->resourceHandler = new N_CodeRain_Res::ResourceHandler();
         this->vectors = resourceHandler->GetAllVectors();
 
-        Managed::droplet_default_outline = gcnew List<Color>();
-        Managed::droplet_default_inner = gcnew List<Color>();
-        Managed::droplet_inner = gcnew List<Color>();
-        Managed::droplet_glow = gcnew List<Color>();
-        Managed::droplet_first = gcnew List<Color>();
+        this->netToRaindrop = new NetToRaindropParams();
+        this->preparationSuccess = this->netToRaindrop->getSuccess();
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(15, 27, 100, 43));
-        Managed::droplet_default_inner->Add(Color::FromArgb(78, 214, 108));
-        Managed::droplet_inner->Add(Color::FromArgb(37, 204, 79));
-        Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
-        Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
+        Managed::setDropletOutline(0, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 27, 100, 43));
+        Managed::setDropletInner(0, Color::FromArgb(78, 214, 108), Color::FromArgb(78, 214, 108));
+        Managed::setDropletFirst(0, Color::FromArgb(224, 255, 206), Color::FromArgb(224, 255, 206));
 
-        Managed::droplet_default_outline->Add(Color::FromArgb(15, 27, 100, 43));
-        Managed::droplet_default_inner->Add(Color::FromArgb(138, 214, 108));
-        Managed::droplet_inner->Add(Color::FromArgb(87, 204, 79));
-        Managed::droplet_glow->Add(Color::FromArgb(215, 255, 192));
-        Managed::droplet_first->Add(Color::FromArgb(224, 255, 206));
-
-        Managed::images = gcnew List<List<Bitmap^>^>();
-        Bitmap^ bmp = nullptr;
-        for (int i = 0; i < 2; i++)
-        {
-            List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
-            int j = 0;
-            do
-            {
-                bmp = CodeRain::resourceToBitmap(this->vectors[j], i);
-                if (bmp != nullptr)
-                {
-                    bmp_list->Add(bmp);
-                    j++;
-                }
-            } while (this->vectors[j] != nullptr);
-            Managed::images->Add(bmp_list);
-        }
+        Managed::setDropletOutline(1, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 100, 43, 27));
+        Managed::setDropletInner(1, Color::FromArgb(138, 214, 108), Color::FromArgb(214, 108, 78));
+        Managed::setDropletFirst(1, Color::FromArgb(224, 255, 206), Color::FromArgb(255, 224, 206));
+        
+        Managed::setImages(this->makeImages(this->vectors));
 
         this->raindrops = raindrops;
-
-        this->netToRaindrop = new NetToRaindropParams();
 
         this->codeCloud[0] = new CodeCloud(raindrops);
         this->codeCloud[1] = new CodeCloud(raindrops);
@@ -69,32 +44,65 @@ namespace N_CodeRain
         delete this->resourceHandler;
         delete this->vectors;
 
-        for (int i = 0; i < Managed::images->Count; i++)
-        {
-            for (int j = 0; j < Managed::images[i]->Count; j++)
-            {
-                delete Managed::images[i][j];
-            }
-            delete Managed::images[i];
-        }
-        delete Managed::images;
-
         for (int i = 0; i < 2; i++)
         {
             delete this->codeCloud[i];
-
-            delete Managed::droplet_default_outline[i];
-            delete Managed::droplet_default_inner[i];
-            delete Managed::droplet_inner[i];
-            delete Managed::droplet_glow[i];
-            delete Managed::droplet_first[i];
         }
         delete this->codeCloud;
         delete this->netToRaindrop;
+    }
 
+    void CodeRain::Managed::ReleaseResources()
+    {
+        Managed::ReleaseBitmaps();
+
+        for (int i = 0; i < 2; i++)
+        {
+            delete Managed::droplet_outline[i];
+            delete Managed::droplet_inner[i];
+            delete Managed::droplet_first[i];
+
+            delete Managed::droplet_outline_alt[i];
+            delete Managed::droplet_inner_alt[i];
+            delete Managed::droplet_first_alt[i];
+        }
+
+        delete Managed::droplet_outline;
         delete Managed::droplet_inner;
-        delete Managed::droplet_glow;
         delete Managed::droplet_first;
+
+        delete Managed::droplet_outline_alt;
+        delete Managed::droplet_inner_alt;
+        delete Managed::droplet_first_alt;
+    }
+
+    void CodeRain::Managed::ReleaseBitmaps()
+    {
+        if (Managed::images != nullptr)
+        {
+            for (int i = 0; i < Managed::images->Count; i++)
+            {
+                for (int j = 0; j < Managed::images[i]->Count; j++)
+                {
+                    delete Managed::images[i][j];
+                }
+                delete Managed::images[i];
+            }
+            delete Managed::images;
+        }
+
+        if (Managed::images_alt != nullptr)
+        {
+            for (int i = 0; i < Managed::images_alt->Count; i++)
+            {
+                for (int j = 0; j < Managed::images_alt[i]->Count; j++)
+                {
+                    delete Managed::images_alt[i][j];
+                }
+                delete Managed::images_alt[i];
+            }
+            delete Managed::images_alt;
+        }
     }
 
     CodeRain* CodeRain::getInstance() {
@@ -109,8 +117,192 @@ namespace N_CodeRain
         }
     }
 
+    List<Bitmap^>^ CodeRain::Managed::getImages(int offs, bool preparationSuccess)
+    {
+        if (preparationSuccess)
+        {
+            return Managed::images_alt[offs];
+        }
+        else
+        {
+            return Managed::images[offs];
+        }
+    }
+
+    Color CodeRain::Managed::getDropletOutline(int offs, bool preparationSuccess)
+    {
+        if (preparationSuccess)
+        {
+            return Managed::droplet_outline_alt[offs];
+        }
+        else
+        {
+            return Managed::droplet_outline[offs];
+        }
+    }
+
+    Color CodeRain::Managed::getDropletInner(int offs, bool preparationSuccess)
+    {
+        if (preparationSuccess)
+        {
+            return Managed::droplet_inner_alt[offs];
+        }
+        else
+        {
+            return Managed::droplet_inner[offs];
+        }
+    }
+
+    Color CodeRain::Managed::getDropletFirst(int offs, bool preparationSuccess)
+    {
+        if (preparationSuccess)
+        {
+            return Managed::droplet_first_alt[offs];
+        }
+        else
+        {
+            return Managed::droplet_first[offs];
+        }
+    }
+
+    void CodeRain::Managed::setDropletOutline(int offs, Color color, Color color_alt)
+    {
+        if (Managed::droplet_outline == nullptr)
+        {
+            Managed::droplet_outline = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_outline->Count == offs)
+        {
+            Managed::droplet_outline->Add(color);
+        }
+        else
+        {
+            delete Managed::droplet_outline[offs];
+            Managed::droplet_outline[offs] == color;
+        }
+
+        if (Managed::droplet_outline_alt == nullptr)
+        {
+            Managed::droplet_outline_alt = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_outline_alt->Count == offs)
+        {
+            Managed::droplet_outline_alt->Add(color_alt);
+        }
+        else
+        {
+            delete Managed::droplet_outline_alt[offs];
+            Managed::droplet_outline_alt[offs] == color_alt;
+        }
+    }
+
+    void CodeRain::Managed::setDropletInner(int offs, Color color, Color color_alt)
+    {
+        if (Managed::droplet_inner == nullptr)
+        {
+            Managed::droplet_inner = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_inner->Count == offs)
+        {
+            Managed::droplet_inner->Add(color);
+        }
+        else
+        {
+            delete Managed::droplet_inner[offs];
+            Managed::droplet_inner[offs] == color;
+        }
+
+        if (Managed::droplet_inner_alt == nullptr)
+        {
+            Managed::droplet_inner_alt = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_inner_alt->Count == offs)
+        {
+            Managed::droplet_inner_alt->Add(color_alt);
+        }
+        else
+        {
+            delete Managed::droplet_inner_alt[offs];
+            Managed::droplet_inner_alt[offs] == color_alt;
+        }
+    }
+
+    void CodeRain::Managed::setDropletFirst(int offs, Color color, Color color_alt)
+    {
+        if (Managed::droplet_first == nullptr)
+        {
+            Managed::droplet_first = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_first->Count == offs)
+        {
+            Managed::droplet_first->Add(color);
+        }
+        else
+        {
+            delete Managed::droplet_first[offs];
+            Managed::droplet_first[offs] == color;
+        }
+
+        if (Managed::droplet_first_alt == nullptr)
+        {
+            Managed::droplet_first_alt = gcnew List<Color>();
+        }
+
+        if (Managed::droplet_first_alt->Count == offs)
+        {
+            Managed::droplet_first_alt->Add(color_alt);
+        }
+        else
+        {
+            delete Managed::droplet_first_alt[offs];
+            Managed::droplet_first_alt[offs] == color_alt;
+        }
+    }
+
+    List<List<List<Bitmap^>^>^>^ CodeRain::makeImages(char** vectors)
+    {
+        List<List<List<Bitmap^>^>^>^ images_alt = gcnew List<List<List<Bitmap^>^>^>();
+        Bitmap^ bmp = nullptr;
+        bool preparationSuccess = false;
+        for (int alt = 0; alt < 2; alt++)
+        {
+            List<List<Bitmap^>^>^ images = gcnew List<List<Bitmap^>^>();
+            for (int i = 0; i < 2; i++)
+            {
+                List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
+                int j = 0;
+                do
+                {
+                    bmp = CodeRain::resourceToBitmap(vectors[j], i, preparationSuccess);
+                    if (bmp != nullptr)
+                    {
+                        bmp_list->Add(bmp);
+                        j++;
+                    }
+                } while (vectors[j] != nullptr);
+                images->Add(bmp_list);
+            }
+            images_alt->Add(images);
+            preparationSuccess = true;
+        }
+        return images_alt;
+    }
+
+    void CodeRain::Managed::setImages(List<List<List<Bitmap^>^>^>^ images)
+    {
+        Managed::images = images[0];
+        Managed::images_alt = images[1];
+    }
+
     void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
     {
+        this->preparationSuccess = this->netToRaindrop->getSuccess();
+
         e->Graphics->SmoothingMode = SmoothingMode::AntiAlias;
         e->Graphics->CompositingMode = CompositingMode::SourceCopy;
         e->Graphics->InterpolationMode = InterpolationMode::NearestNeighbor;
@@ -122,7 +314,7 @@ namespace N_CodeRain
         CodeRain::paintFromCloud(1, codeRainBox, e);
     }
 
-    Bitmap^ CodeRain::resourceToBitmap(char* res_str, int offs)
+    Bitmap^ CodeRain::resourceToBitmap(char* res_str, int offs, bool preparationSuccess)
     {
         float scale = 0.09f;
 
@@ -151,7 +343,7 @@ namespace N_CodeRain
                 int steps = 10;
                 for (int i = 0; i < steps; i++)
                 {
-                    Pen^ pen = gcnew Pen(Managed::droplet_default_outline[offs], i);
+                    Pen^ pen = gcnew Pen(Managed::getDropletOutline(offs, preparationSuccess), i);
                     pen->Alignment = PenAlignment::Outset;
                     graphics->DrawPath(pen, gpath);  // Draw outline
                     delete pen;
@@ -166,7 +358,7 @@ namespace N_CodeRain
                 }
                 else
                 {
-                    Brush^ br = gcnew SolidBrush(Managed::droplet_default_inner[offs]);
+                    Brush^ br = gcnew SolidBrush(Managed::getDropletInner(offs, preparationSuccess));
                     graphics->FillPath(br, gpath);  // Fill outline
                     delete br;
                 }
@@ -227,8 +419,8 @@ namespace N_CodeRain
                     array<ColorMap^>^ cmp_arr = nullptr;
                     if (i == 0)
                     {
-                        cmp->OldColor = Managed::droplet_default_inner[offs];
-                        cmp->NewColor = Managed::droplet_first[offs];
+                        cmp->OldColor = Managed::getDropletInner(offs, this->preparationSuccess);
+                        cmp->NewColor = Managed::getDropletFirst(offs, this->preparationSuccess);
                         ia->SetGamma(0.3);
                     }
 
@@ -243,7 +435,7 @@ namespace N_CodeRain
 
                     System::Drawing::Rectangle^ rect = gcnew System::Drawing::Rectangle(destX, destY, destWidth, destHeight);
 
-                    List<Bitmap^>^ imgs = Managed::images[offs];
+                    List<Bitmap^>^ imgs = Managed::getImages(offs, this->preparationSuccess);
                     e->Graphics->DrawImage(imgs[symbol], *rect, 0, 0, imgs[symbol]->Width, imgs[symbol]->Height,
                         GraphicsUnit::Pixel, ia);
                     delete imgs;

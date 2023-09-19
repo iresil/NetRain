@@ -11,6 +11,8 @@ namespace N_CodeRain_Net
 
     Sniffer::Sniffer()
     {
+        this->success = false;
+
         this->tcp = 0;
         this->udp = 0;
         this->icmp = 0;
@@ -53,6 +55,11 @@ namespace N_CodeRain_Net
     {
         getInstance()->Sniff((int)ignored);
         _endthread();
+    }
+
+    bool Sniffer::getSuccess()
+    {
+        return this->success;
     }
 
     int Sniffer::getTcpCount()
@@ -192,6 +199,7 @@ namespace N_CodeRain_Net
             if (mangobyte > 0)
             {
                 ProcessPacket(Buffer, mangobyte);
+                this->success = true;
             }
             else
             {

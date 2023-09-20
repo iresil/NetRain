@@ -17,7 +17,7 @@ namespace N_CodeRain
 
     Raindrop* CodeCloud::generate_raindrop_rand()
     {
-        int tail_length = -1;
+        int tail_length = rand() % 3;
         int fall_seconds_mult = -1;
         int** symbols = nullptr;
         int* change_seconds_mult = nullptr;

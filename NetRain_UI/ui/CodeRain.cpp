@@ -465,7 +465,7 @@ namespace N_CodeRain
                 if (i == tail_length - 1 && y + droplet_offset > rowNumber)
                 {
                     this->netToRaindrop->CalculateRaindropParams();
-                    int length = this->netToRaindrop->getTailLength(offs);
+                    int length = (this->preparationSuccess) ? this->netToRaindrop->getTailLength(offs) : -1;
                     this->codeCloud[offs]->reset_raindrop(x, rowNumber, length);
                 }
 

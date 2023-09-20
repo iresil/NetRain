@@ -35,7 +35,7 @@ namespace N_CodeRain_Net
     Sniffer::~Sniffer()
     {
         this->run_thread = false;
-        delete[] this->hostname;
+        delete[] &this->hostname;
         delete this->local;
     }
 

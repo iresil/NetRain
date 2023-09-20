@@ -41,6 +41,8 @@ namespace N_CodeRain
 
     CodeRain::~CodeRain()
     {
+        Managed::ReleaseResources();
+
         delete this->resourceHandler;
         delete this->vectors;
 
@@ -48,7 +50,7 @@ namespace N_CodeRain
         {
             delete this->codeCloud[i];
         }
-        delete this->codeCloud;
+        delete[] &this->codeCloud;
         delete this->netToRaindrop;
     }
 
@@ -67,12 +69,18 @@ namespace N_CodeRain
             delete Managed::droplet_first_alt[i];
         }
 
+        Managed::droplet_outline->Clear();
         delete Managed::droplet_outline;
+        Managed::droplet_inner->Clear();
         delete Managed::droplet_inner;
+        Managed::droplet_first->Clear();
         delete Managed::droplet_first;
 
+        Managed::droplet_outline_alt->Clear();
         delete Managed::droplet_outline_alt;
+        Managed::droplet_inner_alt->Clear();
         delete Managed::droplet_inner_alt;
+        Managed::droplet_first_alt->Clear();
         delete Managed::droplet_first_alt;
     }
 
@@ -84,10 +92,12 @@ namespace N_CodeRain
             {
                 for (int j = 0; j < Managed::images[i]->Count; j++)
                 {
-                    delete Managed::images[i][j];
+                    Managed::ReleaseBitmapAt(Managed::images[i], j);
                 }
+                Managed::images[i]->Clear();
                 delete Managed::images[i];
             }
+            Managed::images->Clear();
             delete Managed::images;
         }
 
@@ -97,12 +107,19 @@ namespace N_CodeRain
             {
                 for (int j = 0; j < Managed::images_alt[i]->Count; j++)
                 {
-                    delete Managed::images_alt[i][j];
+                    Managed::ReleaseBitmapAt(Managed::images_alt[i], j);
                 }
+                Managed::images_alt[i]->Clear();
                 delete Managed::images_alt[i];
             }
+            Managed::images_alt->Clear();
             delete Managed::images_alt;
         }
+    }
+    
+    void CodeRain::Managed::ReleaseBitmapAt(List<Bitmap^>^ list, int index)
+    {
+        delete list[index];
     }
 
     CodeRain* CodeRain::getInstance() {

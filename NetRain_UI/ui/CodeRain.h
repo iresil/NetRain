@@ -18,6 +18,7 @@ namespace N_CodeRain
         public:
             static void ReleaseResources();
             static void ReleaseBitmaps();
+            static void ReleaseBitmapAt(List<Bitmap^>^ list, int index);
 
             static List<Bitmap^>^ getImages(int offs, bool preparationSuccess);
             static Color getDropletOutline(int offs, bool preparationSuccess);

@@ -147,7 +147,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="protocol_headers\ICMP_HDR.h" />
     <ClInclude Include="protocol_headers\IPV4_HDR.h" />

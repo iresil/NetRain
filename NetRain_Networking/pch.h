@@ -7,11 +7,12 @@
 #ifndef PCH_H
 #define PCH_H
 
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 // add headers that you want to pre-compile here
 #include <WinSock2.h>
 #include <process.h>
 #include <iostream>
-#include "framework.h"
 
 #endif //PCH_H

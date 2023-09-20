@@ -34,5 +34,10 @@ namespace N_CodeRain
         int** udp_symbols;
         int* udp_change_seconds_multiplier;
         float* udp_opacity;
+
+        long timerStart;
+        bool hasTimeElapsed();
+        void refreshTcp(int new_tcp_count);
+        void refreshUdp(int new_udp_count);
     };
 }

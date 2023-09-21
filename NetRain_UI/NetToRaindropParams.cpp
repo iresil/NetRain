@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "NetToRaindropParams.h"
 #include "../NetRain_Networking/Sniffer.h"
+#include "../NetRain_Common/Consts.h"
 
 namespace N_CodeRain
 {
@@ -61,7 +62,7 @@ namespace N_CodeRain
         bool elapsed = false;
         long currentTime = GetTickCount64();
         long elapsed_milliseconds = currentTime - this->timerStart;
-        if (elapsed_milliseconds > 6000)
+        if (elapsed_milliseconds > PACKET_COUNT_REFRESH_MILLISECONDS)
         {
             this->timerStart = currentTime;
             elapsed = true;
@@ -75,7 +76,7 @@ namespace N_CodeRain
 
     void NetToRaindropParams::refreshTcp(int new_tcp_count)
     {
-        this->tcp_count = new_tcp_count + 4;
+        this->tcp_count = new_tcp_count + MIN_TCP_COUNT_AFTER_REFRESH;
         this->average_tcp_count = this->tcp_count;
         this->max_tcp_count = this->tcp_count;
         this->times_called = 0;
@@ -83,7 +84,7 @@ namespace N_CodeRain
 
     void NetToRaindropParams::refreshUdp(int new_udp_count)
     {
-        this->udp_count = new_udp_count + 4;
+        this->udp_count = new_udp_count + MIN_TCP_COUNT_AFTER_REFRESH;
         this->average_udp_count = this->udp_count;
         this->max_udp_count = this->udp_count;
         this->times_called = 0;
@@ -91,29 +92,29 @@ namespace N_CodeRain
 
     void NetToRaindropParams::CalculateRaindropParams()
     {
-        int max_tcp_tail = (this->average_tcp_count / 20) * 30;
-        int max_udp_tail = (this->average_udp_count / 20) * 30;
+        int max_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MAX_TAIL_SIZE;
+        int max_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MAX_TAIL_SIZE;
 
-        int min_tcp_tail = (this->average_tcp_count / 20) * 10;
-        int min_udp_tail = (this->average_udp_count / 20) * 10;
+        int min_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MIN_TAIL_SIZE;
+        int min_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MIN_TAIL_SIZE;
 
         int tcp_tail = 0;
         if (this->max_tcp_count > 0)
         {
-            if (max_tcp_tail > 30)
+            if (max_tcp_tail > RAINDROP_MAX_TAIL_SIZE)
             {
-                max_tcp_tail = ((max_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (30 - 10) + 10;
-                min_tcp_tail = ((min_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (30 - 10) + 10;
+                max_tcp_tail = ((max_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+                min_tcp_tail = ((min_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
             }
             tcp_tail = ((this->tcp_count - 0.0) / (this->max_tcp_count - 0.0)) * (max_tcp_tail - min_tcp_tail) + min_tcp_tail;
         }
         int udp_tail = 0;
         if (this->max_udp_count > 0)
         {
-            if (max_udp_tail > 30)
+            if (max_udp_tail > RAINDROP_MAX_TAIL_SIZE)
             {
-                max_udp_tail = ((max_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (30 - 10) + 10;
-                min_udp_tail = ((min_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (30 - 10) + 10;
+                max_udp_tail = ((max_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+                min_udp_tail = ((min_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
             }
             udp_tail = ((this->udp_count - 0.0) / (this->max_udp_count - 0.0)) * (max_udp_tail - min_udp_tail) + min_udp_tail;
         }

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CodeCloud.h"
+#include "../NetRain_Common/Consts.h"
 
 namespace N_CodeRain
 {
@@ -18,7 +19,7 @@ namespace N_CodeRain
     Raindrop* CodeCloud::generate_raindrop_rand()
     {
         int tail_length = rand() % 3;
-        int fall_seconds_mult = -1;
+        int fall_seconds_mult = IGNORE_VALUE;
         int** symbols = nullptr;
         int* change_seconds_mult = nullptr;
         float* opacity = nullptr;
@@ -31,9 +32,9 @@ namespace N_CodeRain
     void CodeCloud::generate_raindrop_params(int& tail_length, int& fall_seconds_mult, int** &symbols,
         int* &change_seconds_mult, float* &opacity)
     {
-        tail_length = (tail_length > -1) ? tail_length : 10 + rand() % (30 - 10);
-        fall_seconds_mult = (fall_seconds_mult > -1) ? fall_seconds_mult : 1 + rand() % (4 - 1);
-        int drop_count = 6;
+        tail_length = (tail_length > IGNORE_VALUE) ? tail_length : RAINDROP_MIN_TAIL_SIZE + rand() % (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE);
+        fall_seconds_mult = (fall_seconds_mult > IGNORE_VALUE) ? fall_seconds_mult : RAINDROP_MIN_FALL_SECONDS_MULT + rand() % (RAINDROP_MAX_FALL_SECONDS_MULT - RAINDROP_MIN_FALL_SECONDS_MULT);
+        int drop_count = DROPLET_LETTER_COUNT;
         int** symbols_new = new int* [tail_length + 1];
         int* change_seconds_mult_new = new int[tail_length + 1];
         float* opacity_new = new float[tail_length + 1];
@@ -42,7 +43,7 @@ namespace N_CodeRain
             int* symbols_tmp = new int[drop_count + 1];
             for (int k = 0; k < drop_count; k++)
             {
-                symbols_tmp[k] = 1 + rand() % (55 - 1);
+                symbols_tmp[k] = DROPLET_RANDOM_LETTER_OFFSET_MIN + rand() % (DROPLET_RANDOM_LETTER_OFFSET_MAX - DROPLET_RANDOM_LETTER_OFFSET_MIN);
             }
             symbols_tmp[drop_count] = NULL;
             symbols_new[j] = *&symbols_tmp;
@@ -94,7 +95,7 @@ namespace N_CodeRain
 
     void CodeCloud::reset_raindrop(int raindrop, int rows, int tail_length)
     {
-        int fall_seconds_mult = -1;
+        int fall_seconds_mult = IGNORE_VALUE;
         int** symbols = nullptr;
         int* change_seconds_mult = nullptr;
         float* opacity = nullptr;

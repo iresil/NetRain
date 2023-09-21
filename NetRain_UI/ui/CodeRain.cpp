@@ -1,5 +1,7 @@
 #include "../pch.h"
 #include "CodeRain.h"
+#include "../../NetRain_Common/Consts.h"
+#include "../../NetRain_Common/Enums.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -35,8 +37,8 @@ namespace N_CodeRain
 
         this->raindrops = raindrops;
 
-        this->codeCloud[0] = new CodeCloud(raindrops);
-        this->codeCloud[1] = new CodeCloud(raindrops);
+        this->codeCloud[ProtocolDisplayIndex::TCP] = new CodeCloud(raindrops);
+        this->codeCloud[ProtocolDisplayIndex::UDP] = new CodeCloud(raindrops);
     }
 
     CodeRain::~CodeRain()
@@ -46,7 +48,7 @@ namespace N_CodeRain
         delete this->resourceHandler;
         delete this->vectors;
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < ProtocolDisplayIndex::Protocols; i++)
         {
             delete this->codeCloud[i];
         }
@@ -58,7 +60,7 @@ namespace N_CodeRain
     {
         Managed::ReleaseBitmaps();
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < ProtocolDisplayIndex::Protocols; i++)
         {
             delete Managed::droplet_outline[i];
             delete Managed::droplet_inner[i];
@@ -289,7 +291,7 @@ namespace N_CodeRain
         for (int alt = 0; alt < 2; alt++)
         {
             List<List<Bitmap^>^>^ images = gcnew List<List<Bitmap^>^>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < ProtocolDisplayIndex::Protocols; i++)
             {
                 List<Bitmap^>^ bmp_list = gcnew List<Bitmap^>();
                 int j = 0;
@@ -312,8 +314,8 @@ namespace N_CodeRain
 
     void CodeRain::Managed::setImages(List<List<List<Bitmap^>^>^>^ images)
     {
-        Managed::images = images[0];
-        Managed::images_alt = images[1];
+        Managed::images = images[ProtocolDisplayIndex::TCP];
+        Managed::images_alt = images[ProtocolDisplayIndex::UDP];
     }
 
     void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
@@ -327,8 +329,8 @@ namespace N_CodeRain
         
         this->netToRaindrop->RefreshPacketCount();
 
-        CodeRain::paintFromCloud(0, codeRainBox, e);
-        CodeRain::paintFromCloud(1, codeRainBox, e);
+        CodeRain::paintFromCloud(ProtocolDisplayIndex::TCP, codeRainBox, e);
+        CodeRain::paintFromCloud(ProtocolDisplayIndex::UDP, codeRainBox, e);
     }
 
     Bitmap^ CodeRain::resourceToBitmap(char* res_str, int offs, bool preparationSuccess)
@@ -465,7 +467,7 @@ namespace N_CodeRain
                 if (i == tail_length - 1 && y + droplet_offset > rowNumber)
                 {
                     this->netToRaindrop->CalculateRaindropParams();
-                    int length = (this->preparationSuccess) ? this->netToRaindrop->getTailLength(offs) : -1;
+                    int length = (this->preparationSuccess) ? this->netToRaindrop->getTailLength(offs) : IGNORE_VALUE;
                     this->codeCloud[offs]->reset_raindrop(x, rowNumber, length);
                 }
 

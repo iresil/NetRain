@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "Raindrop.h"
+#include "../NetRain_Common/Consts.h"
 
 namespace N_CodeRain
 {
     Raindrop::Raindrop(int tail_length, int fall_seconds_multiplier,
         int** symbols, int change_seconds_multiplier[], float opacity[])
     {
-        this->droplet_offset = (rand() % 60) - 30;
+        this->droplet_offset = (rand() % (RAINDROP_MAX_TAIL_SIZE * 2)) - RAINDROP_MAX_TAIL_SIZE;
         this->tail_length = tail_length;
         this->fall_seconds_multiplier = fall_seconds_multiplier;
         this->times_fallen = 0;
@@ -69,6 +70,6 @@ namespace N_CodeRain
         this->drops = droplet_array;
 
         this->fall_seconds_multiplier = fall_seconds_mult;
-        this->droplet_offset = (rand() % 30) - rows - this->tail_length;
+        this->droplet_offset = (rand() % RAINDROP_MAX_TAIL_SIZE) - rows - this->tail_length;
     }
 }

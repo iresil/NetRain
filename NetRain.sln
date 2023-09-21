@@ -7,14 +7,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain", "NetRain_UI\NetRa
 	ProjectSection(ProjectDependencies) = postProject
 		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C} = {1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}
 		{3ACDE889-835F-4052-92BB-3D71AB0C5D8E} = {3ACDE889-835F-4052-92BB-3D71AB0C5D8E}
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4} = {7899C7B8-6ED6-4263-963D-C6E5F6030AB4}
 		{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1} = {A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_Resources", "NetRain_Resources\NetRain_Resources.vcxproj", "{3ACDE889-835F-4052-92BB-3D71AB0C5D8E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_CodeWeather", "NetRain_CodeWeather\NetRain_CodeWeather.vcxproj", "{A1666A2E-7042-4EA7-937C-DB3FF8BD09E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4} = {7899C7B8-6ED6-4263-963D-C6E5F6030AB4}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_Networking", "NetRain_Networking\NetRain_Networking.vcxproj", "{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetRain_Common", "NetRain_Common\NetRain_Common.vcxproj", "{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +62,14 @@ Global
 		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x64.Build.0 = Release|x64
 		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x86.ActiveCfg = Release|Win32
 		{1CFC29B9-A481-4589-BCFC-A5A9D9FDC65C}.Release|x86.Build.0 = Release|Win32
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Debug|x64.ActiveCfg = Debug|x64
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Debug|x64.Build.0 = Debug|x64
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Debug|x86.ActiveCfg = Debug|Win32
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Debug|x86.Build.0 = Debug|Win32
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Release|x64.ActiveCfg = Release|x64
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Release|x64.Build.0 = Release|x64
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Release|x86.ActiveCfg = Release|Win32
+		{7899C7B8-6ED6-4263-963D-C6E5F6030AB4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

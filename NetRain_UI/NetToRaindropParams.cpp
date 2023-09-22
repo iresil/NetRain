@@ -2,6 +2,7 @@
 #include "NetToRaindropParams.h"
 #include "../NetRain_Networking/Sniffer.h"
 #include "../NetRain_Common/Consts.h"
+#include "../NetRain_Common/Enums.h"
 
 namespace N_CodeRain
 {
@@ -124,11 +125,11 @@ namespace N_CodeRain
 
     int NetToRaindropParams::getTailLength(int type)
     {
-        if (type == 0)
+        if (type == ProtocolDisplayIndex::TCP)
         {
             return this->tcp_tail_length;
         }
-        else if (type == 1)
+        else if (type == ProtocolDisplayIndex::UDP)
         {
             return this->udp_tail_length;
         }
@@ -140,11 +141,11 @@ namespace N_CodeRain
 
     int NetToRaindropParams::getFallSecondsMultiplier(int type)
     {
-        if (type == 0)
+        if (type == ProtocolDisplayIndex::TCP)
         {
             return this->tcp_fall_seconds_multiplier;
         }
-        else if (type == 1)
+        else if (type == ProtocolDisplayIndex::UDP)
         {
             return this->udp_fall_seconds_multiplier;
         }

@@ -93,11 +93,11 @@ namespace N_CodeRain
 
     void NetToRaindropParams::CalculateRaindropParams()
     {
-        int max_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MAX_TAIL_SIZE;
-        int max_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MAX_TAIL_SIZE;
+        int max_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
+        int max_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
 
-        int min_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MIN_TAIL_SIZE;
-        int min_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2)) * RAINDROP_MIN_TAIL_SIZE;
+        int min_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
+        int min_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
 
         int tcp_tail = 0;
         if (this->max_tcp_count > 0)

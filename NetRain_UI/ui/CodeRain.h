@@ -3,6 +3,7 @@
 #include "../NetToRaindropParams.h"
 #include "../../NetRain_Resources/ResourceHandler.h"
 #include "../../NetRain_CodeWeather/CodeCloud.h"
+#include "../../NetRain_Common/Enums.h"
 
 namespace N_CodeRain
 {
@@ -57,7 +58,7 @@ namespace N_CodeRain
         char** vectors;
 
         NetToRaindropParams* netToRaindrop;
-        CodeCloud* codeCloud[2];
+        CodeCloud* codeCloud[ProtocolDisplayIndex::Protocols];
         int raindrops;
 
         Bitmap^ resourceToBitmap(char* res_str, int offs, bool preparationSuccess);

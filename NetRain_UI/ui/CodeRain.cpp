@@ -1,7 +1,6 @@
 #include "../pch.h"
 #include "CodeRain.h"
 #include "../../NetRain_Common/Consts.h"
-#include "../../NetRain_Common/Enums.h"
 
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
@@ -25,20 +24,25 @@ namespace N_CodeRain
         this->netToRaindrop = new NetToRaindropParams();
         this->preparationSuccess = this->netToRaindrop->getSuccess();
 
-        Managed::setDropletOutline(0, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 27, 100, 43));
-        Managed::setDropletInner(0, Color::FromArgb(78, 214, 108), Color::FromArgb(78, 214, 108));
-        Managed::setDropletFirst(0, Color::FromArgb(224, 255, 206), Color::FromArgb(224, 255, 206));
+        Managed::setDropletOutline(ProtocolDisplayIndex::TCP, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 27, 100, 43));
+        Managed::setDropletInner(ProtocolDisplayIndex::TCP, Color::FromArgb(78, 214, 108), Color::FromArgb(78, 214, 108));
+        Managed::setDropletFirst(ProtocolDisplayIndex::TCP, Color::FromArgb(224, 255, 206), Color::FromArgb(224, 255, 206));
 
-        Managed::setDropletOutline(1, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 100, 43, 27));
-        Managed::setDropletInner(1, Color::FromArgb(138, 214, 108), Color::FromArgb(214, 108, 78));
-        Managed::setDropletFirst(1, Color::FromArgb(224, 255, 206), Color::FromArgb(255, 224, 206));
-        
+        Managed::setDropletOutline(ProtocolDisplayIndex::UDP, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 100, 43, 27));
+        Managed::setDropletInner(ProtocolDisplayIndex::UDP, Color::FromArgb(138, 214, 108), Color::FromArgb(214, 108, 78));
+        Managed::setDropletFirst(ProtocolDisplayIndex::UDP, Color::FromArgb(224, 255, 206), Color::FromArgb(255, 224, 206));
+
+        Managed::setDropletOutline(ProtocolDisplayIndex::LOCAL, Color::FromArgb(15, 27, 100, 43), Color::FromArgb(15, 27, 83, 100));
+        Managed::setDropletInner(ProtocolDisplayIndex::LOCAL, Color::FromArgb(78, 214, 108), Color::FromArgb(78, 178, 214));
+        Managed::setDropletFirst(ProtocolDisplayIndex::LOCAL, Color::FromArgb(224, 255, 206), Color::FromArgb(206, 224, 255));
+
         Managed::setImages(this->makeImages(this->vectors));
 
         this->raindrops = raindrops;
 
         this->codeCloud[ProtocolDisplayIndex::TCP] = new CodeCloud(raindrops);
         this->codeCloud[ProtocolDisplayIndex::UDP] = new CodeCloud(raindrops);
+        this->codeCloud[ProtocolDisplayIndex::LOCAL] = new CodeCloud(raindrops);
     }
 
     CodeRain::~CodeRain()
@@ -288,7 +292,7 @@ namespace N_CodeRain
         List<List<List<Bitmap^>^>^>^ images_alt = gcnew List<List<List<Bitmap^>^>^>();
         Bitmap^ bmp = nullptr;
         bool preparationSuccess = false;
-        for (int alt = 0; alt < 2; alt++)
+        for (int alt = 0; alt < NetworkAvailabilityIndex::OptionCount; alt++)
         {
             List<List<Bitmap^>^>^ images = gcnew List<List<Bitmap^>^>();
             for (int i = 0; i < ProtocolDisplayIndex::Protocols; i++)
@@ -314,8 +318,8 @@ namespace N_CodeRain
 
     void CodeRain::Managed::setImages(List<List<List<Bitmap^>^>^>^ images)
     {
-        Managed::images = images[ProtocolDisplayIndex::TCP];
-        Managed::images_alt = images[ProtocolDisplayIndex::UDP];
+        Managed::images = images[NetworkAvailabilityIndex::Network_Unavailable];
+        Managed::images_alt = images[NetworkAvailabilityIndex::Network_Available];
     }
 
     void CodeRain::paint(PictureBox^ codeRainBox, PaintEventArgs^ e)
@@ -331,6 +335,7 @@ namespace N_CodeRain
 
         CodeRain::paintFromCloud(ProtocolDisplayIndex::TCP, codeRainBox, e);
         CodeRain::paintFromCloud(ProtocolDisplayIndex::UDP, codeRainBox, e);
+        CodeRain::paintFromCloud(ProtocolDisplayIndex::LOCAL, codeRainBox, e);
     }
 
     Bitmap^ CodeRain::resourceToBitmap(char* res_str, int offs, bool preparationSuccess)

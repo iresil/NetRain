@@ -10,13 +10,16 @@ namespace N_CodeRain
     {
         this->tcp_count = 0;
         this->udp_count = 0;
+        this->local_count = 0;
         this->timerStart = GetTickCount64();
 
         this->times_called = 0;
         this->average_tcp_count = 0;
         this->average_udp_count = 0;
+        this->average_local_count = 0;
         this->max_tcp_count = 0;
         this->max_udp_count = 0;
+        this->max_local_count = 0;
 
         this->tcp_tail_length = 1;
         this->tcp_fall_seconds_multiplier = 1;
@@ -29,6 +32,12 @@ namespace N_CodeRain
         this->udp_symbols = nullptr;
         this->udp_change_seconds_multiplier = nullptr;
         this->udp_opacity = nullptr;
+
+        this->local_tail_length = 1;
+        this->local_fall_seconds_multiplier = 1;
+        this->local_symbols = nullptr;
+        this->local_change_seconds_multiplier = nullptr;
+        this->local_opacity = nullptr;
     }
 
     bool NetToRaindropParams::getSuccess()
@@ -42,19 +51,24 @@ namespace N_CodeRain
 
         int tcp_count = N_CodeRain_Net::Sniffer::getInstance()->getTcpCount();
         int udp_count = N_CodeRain_Net::Sniffer::getInstance()->getUdpCount();
+        int local_count = N_CodeRain_Net::Sniffer::getInstance()->getLocalCount();
         this->tcp_count += tcp_count;
         this->udp_count += udp_count;
+        this->local_count += local_count;
 
         this->average_tcp_count = (this->average_tcp_count * (this->times_called - 1) + this->tcp_count) / this->times_called;
         this->average_udp_count = (this->average_udp_count * (this->times_called - 1) + this->udp_count) / this->times_called;
+        this->average_local_count = (this->average_local_count * (this->times_called - 1) + this->local_count) / this->times_called;
 
         this->max_tcp_count = (this->tcp_count > this->max_tcp_count) ? this->tcp_count : this->max_tcp_count;
         this->max_udp_count = (this->udp_count > this->max_udp_count) ? this->udp_count : this->max_udp_count;
+        this->max_local_count = (this->local_count > this->max_local_count) ? this->local_count : this->max_local_count;
 
         if (this->hasTimeElapsed())
         {
             this->refreshTcp(tcp_count);
             this->refreshUdp(udp_count);
+            this->refreshLocal(local_count);
         }
     }
 
@@ -77,7 +91,7 @@ namespace N_CodeRain
 
     void NetToRaindropParams::refreshTcp(int new_tcp_count)
     {
-        this->tcp_count = new_tcp_count + MIN_TCP_COUNT_AFTER_REFRESH;
+        this->tcp_count = new_tcp_count + MIN_PACKET_COUNT_AFTER_REFRESH;
         this->average_tcp_count = this->tcp_count;
         this->max_tcp_count = this->tcp_count;
         this->times_called = 0;
@@ -85,9 +99,17 @@ namespace N_CodeRain
 
     void NetToRaindropParams::refreshUdp(int new_udp_count)
     {
-        this->udp_count = new_udp_count + MIN_TCP_COUNT_AFTER_REFRESH;
+        this->udp_count = new_udp_count + MIN_PACKET_COUNT_AFTER_REFRESH;
         this->average_udp_count = this->udp_count;
         this->max_udp_count = this->udp_count;
+        this->times_called = 0;
+    }
+
+    void NetToRaindropParams::refreshLocal(int new_local_count)
+    {
+        this->local_count = new_local_count + MIN_PACKET_COUNT_AFTER_REFRESH;
+        this->average_local_count = this->local_count;
+        this->max_local_count = this->local_count;
         this->times_called = 0;
     }
 
@@ -95,9 +117,11 @@ namespace N_CodeRain
     {
         int max_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
         int max_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
+        int max_local_tail = (this->average_local_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
 
         int min_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
         int min_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
+        int min_local_tail = (this->average_local_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
 
         int tcp_tail = 0;
         if (this->max_tcp_count > 0)
@@ -119,8 +143,19 @@ namespace N_CodeRain
             }
             udp_tail = ((this->udp_count - 0.0) / (this->max_udp_count - 0.0)) * (max_udp_tail - min_udp_tail) + min_udp_tail;
         }
+        int local_tail = 0;
+        if (this->max_local_count > 0)
+        {
+            if (max_local_tail > RAINDROP_MAX_TAIL_SIZE)
+            {
+                max_local_tail = ((max_local_tail - 0.0) / (max_local_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+                min_local_tail = ((min_local_tail - 0.0) / (max_local_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+            }
+            local_tail = ((this->local_count - 0.0) / (this->max_local_count - 0.0)) * (max_local_tail - min_local_tail) + min_local_tail;
+        }
         this->tcp_tail_length = tcp_tail;
         this->udp_tail_length = udp_tail;
+        this->local_tail_length = local_tail;
     }
 
     int NetToRaindropParams::getTailLength(int type)
@@ -132,6 +167,10 @@ namespace N_CodeRain
         else if (type == ProtocolDisplayIndex::UDP)
         {
             return this->udp_tail_length;
+        }
+        else if (type == ProtocolDisplayIndex::LOCAL)
+        {
+            return this->local_tail_length;
         }
         else
         {
@@ -148,6 +187,10 @@ namespace N_CodeRain
         else if (type == ProtocolDisplayIndex::UDP)
         {
             return this->udp_fall_seconds_multiplier;
+        }
+        else if (type == ProtocolDisplayIndex::LOCAL)
+        {
+            return this->local_fall_seconds_multiplier;
         }
         else
         {

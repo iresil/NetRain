@@ -13,7 +13,7 @@ namespace N_CodeRain
     const int DROPLET_RANDOM_LETTER_OFFSET_MAX = 55;
 
     const int PACKET_COUNT_REFRESH_MILLISECONDS = 6000;
-    const int MIN_TCP_COUNT_AFTER_REFRESH = 4;
+    const int MIN_PACKET_COUNT_AFTER_REFRESH = 4;
 
     const int IGNORE_VALUE = -1;
 }

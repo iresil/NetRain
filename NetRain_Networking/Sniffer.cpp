@@ -18,6 +18,7 @@ namespace N_CodeRain_Net
         this->icmp = 0;
         this->others = 0;
         this->igmp = 0;
+        this->local = 0;
         this->total = 0;
 
         this->debug = false;
@@ -36,7 +37,7 @@ namespace N_CodeRain_Net
     {
         this->run_thread = false;
         delete[] &this->hostname;
-        delete this->local;
+        delete this->host;
     }
 
     Sniffer* Sniffer::getInstance() {
@@ -76,6 +77,13 @@ namespace N_CodeRain_Net
         return result;
     }
 
+    int Sniffer::getLocalCount()
+    {
+        int result = this->local;
+        this->local = 0;
+        return result;
+    }
+
     void Sniffer::SetupNetworkInterfaces()
     {
         // Initialize Winsock
@@ -101,16 +109,16 @@ namespace N_CodeRain_Net
         OutputDebugStringW((std::wstring(L"\nHost name: ") + wString + std::wstring(L" \n")).c_str());
 
         // Retrieve the available IPs of the local host
-        local = gethostbyname(hostname);
+        host = gethostbyname(hostname);
         OutputDebugStringW(L"\nAvailable Network Interfaces: \n");
-        if (local == NULL)
+        if (host == NULL)
         {
             OutputDebugStringW((std::wstring(L"Error: ") + std::to_wstring(WSAGetLastError()) + std::wstring(L"\n")).c_str());
             WSACleanup();
             return;
         }
 
-        for (int i = 0; local->h_addr_list[i] != 0; ++i)
+        for (int i = 0; host->h_addr_list[i] != 0; ++i)
         {
             network_interface_count++;
         }
@@ -134,17 +142,17 @@ namespace N_CodeRain_Net
         }
         OutputDebugStringW(L"Created.");
 
-        memcpy(&addr, local->h_addr_list[in], sizeof(struct in_addr));
+        memcpy(&addr, host->h_addr_list[in], sizeof(struct in_addr));
         MultiByteToWideChar(CP_ACP, 0, inet_ntoa(addr), -1, wString, 4096);
-        OutputDebugStringW((std::wstring(L"Interface Number: ") + std::to_wstring(in) + std::wstring(L" Address: ") + wString + std::wstring(L" Type: ") + std::to_wstring(local->h_addrtype)).c_str());
+        OutputDebugStringW((std::wstring(L"Interface Number: ") + std::to_wstring(in) + std::wstring(L" Address: ") + wString + std::wstring(L" Type: ") + std::to_wstring(host->h_addrtype)).c_str());
 
         // Start sniffing from the first interface
         struct sockaddr_in dest = *(new sockaddr_in());
         memset(&dest, 0, sizeof(dest));
 
-        if (local->h_addr_list[in] != nullptr)
+        if (host->h_addr_list[in] != nullptr)
         {
-            memcpy(&dest.sin_addr.s_addr, local->h_addr_list[in], sizeof(dest.sin_addr.s_addr));
+            memcpy(&dest.sin_addr.s_addr, host->h_addr_list[in], sizeof(dest.sin_addr.s_addr));
             dest.sin_family = AF_INET;
             dest.sin_port = in;
 
@@ -215,6 +223,19 @@ namespace N_CodeRain_Net
         IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         ++total;
 
+        struct sockaddr_in source = *(new sockaddr_in());
+        memset(&source, 0, sizeof(source));
+        source.sin_addr.s_addr = iphdr->ip_srcaddr;
+
+        struct sockaddr_in dest = *(new sockaddr_in());
+        memset(&dest, 0, sizeof(dest));
+        dest.sin_addr.s_addr = iphdr->ip_destaddr;
+
+        wchar_t* address_in = new wchar_t[4096];
+        MultiByteToWideChar(CP_ACP, 0, inet_ntoa(source.sin_addr), -1, address_in, 4096);
+        wchar_t* address_out = new wchar_t[4096];
+        MultiByteToWideChar(CP_ACP, 0, inet_ntoa(dest.sin_addr), -1, address_out, 4096);
+
         switch (iphdr->ip_protocol)
         {
         case 1:
@@ -227,12 +248,12 @@ namespace N_CodeRain_Net
             break;
 
         case 6:
-            ++tcp;
+            (wcscmp(address_in, L"127.0.0.1") == 0 && wcscmp(address_out, L"127.0.0.1")) ? ++local : ++tcp;
             PrintTcpPacket(Buffer, Size);
             break;
 
         case 17:
-            ++udp;
+            (wcscmp(address_in, L"127.0.0.1") == 0 && wcscmp(address_out, L"127.0.0.1")) ? ++local : ++udp;
             PrintUdpPacket(Buffer, Size);
             break;
 
@@ -240,6 +261,9 @@ namespace N_CodeRain_Net
             ++others;
             break;
         }
+
+        delete[] address_in;
+        delete[] address_out;
 
         if (debug)
         {

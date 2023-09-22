@@ -16,12 +16,15 @@ namespace N_CodeRain
     private:
         int tcp_count;
         int udp_count;
+        int local_count;
 
         int times_called;
         float average_tcp_count;
         float average_udp_count;
+        float average_local_count;
         int max_tcp_count;
         int max_udp_count;
+        int max_local_count;
 
         int tcp_tail_length;
         int tcp_fall_seconds_multiplier;
@@ -35,9 +38,16 @@ namespace N_CodeRain
         int* udp_change_seconds_multiplier;
         float* udp_opacity;
 
+        int local_tail_length;
+        int local_fall_seconds_multiplier;
+        int** local_symbols;
+        int* local_change_seconds_multiplier;
+        float* local_opacity;
+
         long timerStart;
         bool hasTimeElapsed();
         void refreshTcp(int new_tcp_count);
         void refreshUdp(int new_udp_count);
+        void refreshLocal(int new_local_count);
     };
 }

@@ -15,6 +15,7 @@ namespace N_CodeRain_Net
 
         int getTcpCount();
         int getUdpCount();
+        int getLocalCount();
     private:
         Sniffer();
         static Sniffer* instancePtr;
@@ -25,10 +26,10 @@ namespace N_CodeRain_Net
         Sniffer(Sniffer& other) = delete;
         Sniffer& operator=(const Sniffer&) = delete;
 
-        struct hostent* local;
+        struct hostent* host;
 
         char hostname[100];
-        volatile int tcp, udp, icmp, others, igmp, total;
+        volatile int tcp, udp, icmp, others, igmp, local, total;
         int network_interface_count;
         bool run_thread;
         bool debug;

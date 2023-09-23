@@ -82,12 +82,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
-      <ConformanceMode>false</ConformanceMode>
-      <EnforceTypeConversionRules>
-      </EnforceTypeConversionRules>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(TargetDir)NetRain_Resources.lib;$(TargetDir)NetRain_CodeWeather.lib;$(TargetDir)NetRain_Networking.lib;$(TargetDir)NetRain_Common.lib;$(SolutionDir)NetRain_Resources\$(IntDir)app.res;%(AdditionalDependencies)</AdditionalDependencies>
@@ -133,6 +130,8 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(TargetDir)NetRain_Resources.lib;$(TargetDir)NetRain_CodeWeather.lib;$(TargetDir)NetRain_Networking.lib;$(TargetDir)NetRain_Common.lib;$(SolutionDir)NetRain_Resources\$(IntDir)app.res;%(AdditionalDependencies)</AdditionalDependencies>

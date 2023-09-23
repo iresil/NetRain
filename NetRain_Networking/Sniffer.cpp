@@ -147,7 +147,7 @@ namespace N_CodeRain_Net
         OutputDebugStringW((std::wstring(L"Interface Number: ") + std::to_wstring(in) + std::wstring(L" Address: ") + wString + std::wstring(L" Type: ") + std::to_wstring(host->h_addrtype)).c_str());
 
         // Start sniffing from the first interface
-        struct sockaddr_in dest = *(new sockaddr_in());
+        struct sockaddr_in dest = { 0 };
         memset(&dest, 0, sizeof(dest));
 
         if (host->h_addr_list[in] != nullptr)
@@ -223,11 +223,11 @@ namespace N_CodeRain_Net
         IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         ++total;
 
-        struct sockaddr_in source = *(new sockaddr_in());
+        struct sockaddr_in source = { 0 };
         memset(&source, 0, sizeof(source));
         source.sin_addr.s_addr = iphdr->ip_srcaddr;
 
-        struct sockaddr_in dest = *(new sockaddr_in());
+        struct sockaddr_in dest = { 0 };
         memset(&dest, 0, sizeof(dest));
         dest.sin_addr.s_addr = iphdr->ip_destaddr;
 
@@ -280,11 +280,11 @@ namespace N_CodeRain_Net
         IPV4_HDR* iphdr = (IPV4_HDR*)Buffer;
         iphdrlen = iphdr->ip_header_len * 4;
 
-        struct sockaddr_in source = *(new sockaddr_in());
+        struct sockaddr_in source = { 0 };
         memset(&source, 0, sizeof(source));
         source.sin_addr.s_addr = iphdr->ip_srcaddr;
 
-        struct sockaddr_in dest = *(new sockaddr_in());
+        struct sockaddr_in dest = { 0 };
         memset(&dest, 0, sizeof(dest));
         dest.sin_addr.s_addr = iphdr->ip_destaddr;
 

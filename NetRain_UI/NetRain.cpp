@@ -7,6 +7,7 @@ using namespace System::Windows::Forms;
 [STAThread]
 int main(array<String^>^ args)
 {
+    bool isScreenSaver = false;
     for (int i = 0; i < args->Length; i++)
     {
         String^ cleanArg = args[i]->Trim('\\')->Trim('=')->Trim('/');
@@ -17,10 +18,12 @@ int main(array<String^>^ args)
         }
         else if (cleanArg == "p")
             return 0;
+        else if (cleanArg == "s")
+            isScreenSaver = true;
     }
 
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
-    Application::Run(gcnew NetRain::MatrixForm());
+    Application::Run(gcnew NetRain::MatrixForm(isScreenSaver));
     return 0;
 }

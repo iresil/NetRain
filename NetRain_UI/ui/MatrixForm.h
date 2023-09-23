@@ -17,9 +17,15 @@ namespace NetRain
     public ref class MatrixForm : public System::Windows::Forms::Form
     {
     public:
-        MatrixForm(void)
+        MatrixForm(bool isScreenSaver)
         {
             InitializeComponent();
+
+            if (isScreenSaver)
+            {
+                this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
+                screenSaverDelayTimer->Enabled = true;
+            }
         }
 
     protected:
@@ -36,6 +42,7 @@ namespace NetRain
     private:
         System::Windows::Forms::PictureBox^ codeRainBox;
         System::Windows::Forms::Timer^ timerRefresh;
+        System::Windows::Forms::Timer^ screenSaverDelayTimer;
 
         /// <summary>
         /// Required designer variable.
@@ -52,6 +59,7 @@ namespace NetRain
             this->components = (gcnew System::ComponentModel::Container());
             this->codeRainBox = (gcnew System::Windows::Forms::PictureBox());
             this->timerRefresh = (gcnew System::Windows::Forms::Timer(this->components));
+            this->screenSaverDelayTimer = (gcnew System::Windows::Forms::Timer(this->components));
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->codeRainBox))->BeginInit();
             this->SuspendLayout();
             // 
@@ -71,6 +79,11 @@ namespace NetRain
             this->timerRefresh->Enabled = true;
             this->timerRefresh->Interval = 50;
             this->timerRefresh->Tick += gcnew System::EventHandler(this, &MatrixForm::timerRefresh_Tick);
+            // 
+            // screenSaverDelayTimer
+            // 
+            this->screenSaverDelayTimer->Interval = 1000;
+            this->screenSaverDelayTimer->Tick += gcnew System::EventHandler(this, &MatrixForm::screenSaverDelayTimer_Tick);
             // 
             // MatrixForm
             // 
@@ -97,5 +110,31 @@ namespace NetRain
         {
             codeRainBox->Invalidate();
         }
-    }; // end of class MatrixForm
+
+        System::Void screenSaverDelayTimer_Tick(System::Object^ sender, System::EventArgs^ e) 
+        {
+            this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MatrixForm::MatrixForm_KeyDown);
+            this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MatrixForm::MatrixForm_MouseMove);
+            this->PreviewKeyDown += gcnew System::Windows::Forms::PreviewKeyDownEventHandler(this, &MatrixForm::codeRainBox_PreviewKeyDown);
+            this->codeRainBox->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MatrixForm::MatrixForm_MouseMove);
+            this->codeRainBox->PreviewKeyDown += gcnew System::Windows::Forms::PreviewKeyDownEventHandler(this, &MatrixForm::codeRainBox_PreviewKeyDown);
+
+            screenSaverDelayTimer->Enabled = false;
+        }
+        
+        System::Void MatrixForm_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) 
+        {
+            this->Close();
+        }
+        
+        System::Void MatrixForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
+        {
+            this->Close();
+        }
+        
+        System::Void codeRainBox_PreviewKeyDown(System::Object^ sender, System::Windows::Forms::PreviewKeyDownEventArgs^ e) 
+        {
+            this->Close();
+        }
+}; // end of class MatrixForm
 } // end of namespace NetRain

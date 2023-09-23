@@ -1,3 +1,4 @@
+![NetRain](screenshots/NetRain.png "NetRain")
 # Net Rain
 ### A Windows screensaver & network visualizer in the style of Matrix code rain
 ___

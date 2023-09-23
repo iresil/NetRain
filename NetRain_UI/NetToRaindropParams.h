@@ -49,5 +49,6 @@ namespace N_CodeRain
         void refreshTcp(int new_tcp_count);
         void refreshUdp(int new_udp_count);
         void refreshLocal(int new_local_count);
+        int calculateRaindropTail(int packet_count, int average_packet_count, int max_packet_count);
     };
 }

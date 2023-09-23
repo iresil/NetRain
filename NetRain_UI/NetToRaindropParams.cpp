@@ -115,47 +115,28 @@ namespace N_CodeRain
 
     void NetToRaindropParams::CalculateRaindropParams()
     {
-        int max_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
-        int max_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
-        int max_local_tail = (this->average_local_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
+        this->tcp_tail_length = calculateRaindropTail(this->tcp_count, this->average_tcp_count, this->max_tcp_count);
+        this->udp_tail_length = calculateRaindropTail(this->udp_count, this->average_udp_count, this->max_udp_count);
+        this->local_tail_length = calculateRaindropTail(this->local_count, this->average_local_count, this->max_local_count);
+    }
 
-        int min_tcp_tail = (this->average_tcp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
-        int min_udp_tail = (this->average_udp_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
-        int min_local_tail = (this->average_local_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
+    int NetToRaindropParams::calculateRaindropTail(int packet_count, int average_packet_count, int max_packet_count)
+    {
+        int max_tail = (average_packet_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MAX_TAIL_SIZE;
+        int min_tail = (average_packet_count / ((RAINDROP_MAX_TAIL_SIZE + RAINDROP_MIN_TAIL_SIZE) / 2.0)) * RAINDROP_MIN_TAIL_SIZE;
 
-        int tcp_tail = 0;
-        if (this->max_tcp_count > 0)
+        int tail = 0;
+        if (max_packet_count > 0)
         {
-            if (max_tcp_tail > RAINDROP_MAX_TAIL_SIZE)
+            if (max_tail > RAINDROP_MAX_TAIL_SIZE)
             {
-                max_tcp_tail = ((max_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
-                min_tcp_tail = ((min_tcp_tail - 0.0) / (max_tcp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+                max_tail = ((max_tail - 0.0) / (max_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
+                min_tail = ((min_tail - 0.0) / (max_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
             }
-            tcp_tail = ((this->tcp_count - 0.0) / (this->max_tcp_count - 0.0)) * (max_tcp_tail - min_tcp_tail) + min_tcp_tail;
+            tail = ((packet_count - 0.0) / (max_packet_count - 0.0)) * (max_tail - min_tail) + min_tail;
         }
-        int udp_tail = 0;
-        if (this->max_udp_count > 0)
-        {
-            if (max_udp_tail > RAINDROP_MAX_TAIL_SIZE)
-            {
-                max_udp_tail = ((max_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
-                min_udp_tail = ((min_udp_tail - 0.0) / (max_udp_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
-            }
-            udp_tail = ((this->udp_count - 0.0) / (this->max_udp_count - 0.0)) * (max_udp_tail - min_udp_tail) + min_udp_tail;
-        }
-        int local_tail = 0;
-        if (this->max_local_count > 0)
-        {
-            if (max_local_tail > RAINDROP_MAX_TAIL_SIZE)
-            {
-                max_local_tail = ((max_local_tail - 0.0) / (max_local_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
-                min_local_tail = ((min_local_tail - 0.0) / (max_local_tail - 0.0)) * (RAINDROP_MAX_TAIL_SIZE - RAINDROP_MIN_TAIL_SIZE) + RAINDROP_MIN_TAIL_SIZE;
-            }
-            local_tail = ((this->local_count - 0.0) / (this->max_local_count - 0.0)) * (max_local_tail - min_local_tail) + min_local_tail;
-        }
-        this->tcp_tail_length = tcp_tail;
-        this->udp_tail_length = udp_tail;
-        this->local_tail_length = local_tail;
+
+        return tail;
     }
 
     int NetToRaindropParams::getTailLength(int type)

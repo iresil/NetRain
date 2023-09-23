@@ -13,7 +13,7 @@ Neither of the two available modes starts with a full code rain effect. Instead,
 That was done on purpose, since the packet capture process takes a few seconds to begin and until then raindrops are always green.
 
 The code switches between the two available modes automatically, based on whether you simply run it, or run it as administrator.
-*You can't run the network visualizer mode without admin rights, since it uses raw sockets to capture the traffic.*
+*You can't run the network visualizer mode without admin rights, since it uses raw sockets to capture traffic, so the screensaver is always randomized.*
 
 > [!NOTE]
 > This started off as an attempt to create a C++/CLI executable with a larger codebase than a plain code exercise, which would also be as simple as possible, with as few dependencies as possible.
@@ -30,9 +30,9 @@ The retrieved information will afterwards be used for parameterizing the code ra
 - **NetRain_Common/NetRain_Common.vcxproj** - C++ static library that contains consts and enums that will be used across the rest of the projects.
 
 ## Acknowledgements
-The main idea from which this project originated, was born out of discussion with [**Vartalus**](https://github.com/Vartalus), who also contributed during its creation.
+The main idea from which this project originated was conceived during discussion with [**Vartalus**](https://github.com/Vartalus), who also contributed in its creation.
 
-[**@Vartalus**](https://github.com/Vartalus): Thanks for the great cooperation during this project and all the previous ones.
+[**@Vartalus**](https://github.com/Vartalus): Thanks for the excellent cooperation during this project and all the previous ones.
 
 This project was also made possible due to the existence of the following repositories:
 - [**rezmason/matrix**](https://github.com/Rezmason/matrix) - The SVG files that have been used as resources in this project are slightly modified versions of

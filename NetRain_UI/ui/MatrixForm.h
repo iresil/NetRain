@@ -79,7 +79,6 @@ namespace NetRain
             this->BackColor = System::Drawing::Color::Black;
             this->ClientSize = System::Drawing::Size(723, 589);
             this->Controls->Add(this->codeRainBox);
-            this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
             this->Name = L"MatrixForm";
             this->Text = L"MatrixForm";
             this->WindowState = System::Windows::Forms::FormWindowState::Maximized;

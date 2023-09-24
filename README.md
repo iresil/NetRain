@@ -33,7 +33,7 @@ The retrieved information will afterwards be used for parameterizing the code ra
 ## Acknowledgements
 The main idea from which this project originated was conceived during discussion with [**Vartalus**](https://github.com/Vartalus), who also contributed in its creation.
 
-[**@Vartalus**](https://github.com/Vartalus): Thanks for the excellent cooperation during this project and all the previous ones.
+[**@Vartalus**](https://github.com/Vartalus): Thanks for the excellent collaboration during this project and all the previous ones.
 
 This project was also made possible due to the existence of the following repositories:
 - [**rezmason/matrix**](https://github.com/Rezmason/matrix) - The SVG files that have been used as resources in this project are slightly modified versions of
